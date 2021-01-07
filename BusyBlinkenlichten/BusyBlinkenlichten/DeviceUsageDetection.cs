@@ -7,6 +7,7 @@ namespace BusyBlinkenlichten
 {
     class AppInformation
     {
+        public RegistryHive Hive { get; set; }
         public string SubKey { get; set; }
         public bool WindowsApp { get; set; }
         public string Path { 
@@ -18,6 +19,7 @@ namespace BusyBlinkenlichten
         public long LastUsedTimeStart { get; set; }
         public long LastUsedTimeStop { get; set; }
         public bool InUse { get { return (LastUsedTimeStop == 0); } }
+        
     }
     class DeviceUsageDetection
     {
@@ -54,7 +56,8 @@ namespace BusyBlinkenlichten
         public List<AppInformation> MicrophoneApps { get; private set; }
         public List<AppInformation> WebcamApps { get; private set; }
 
-        private RegistryChangeMonitor rm;
+        private RegistryChangeMonitor rmLm;
+        private RegistryChangeMonitor rmCu;
 
         public enum DeviceType
         {
@@ -67,29 +70,45 @@ namespace BusyBlinkenlichten
             MicrophoneApps = new List<AppInformation>();
             WebcamApps = new List<AppInformation>();
 
-            GetUsage(DeviceType.Microhpone);
-            GetUsage(DeviceType.Webcam);
+            GetUsageAllHives();
 
-            this.rm = new RegistryChangeMonitor(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore");
-            this.rm.Changed += ConsentStoreChanged;
-            this.rm.Start();
-            
+            this.rmLm = new RegistryChangeMonitor(RegistryHive.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore");
+            this.rmLm.Changed += ConsentStoreChanged;
+            this.rmLm.Start();
+
+            this.rmCu = new RegistryChangeMonitor(RegistryHive.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore");
+            this.rmCu.Changed += ConsentStoreChanged;
+            this.rmCu.Start();
+
         }
 
         public void StartMonitoring()
         {
-            this.rm.Start();
+            this.rmLm.Start();
+            this.rmCu.Start();
         }
 
         public void StopMonitoring()
         {
-            this.rm.Stop();
+            this.rmLm.Stop();
+            this.rmCu.Stop();
         }
         private void ConsentStoreChanged(object sender, RegistryChangeEventArgs e)
         {
-            GetUsage(DeviceType.Microhpone);
-            GetUsage(DeviceType.Webcam);
+            GetUsageAllHives();
             RaiseEventOnUIThread(DeviceUsageDetected, new object[] { });
+        }
+
+        void GetUsageAllHives()
+        {
+            MicrophoneApps.Clear();
+            WebcamApps.Clear();
+            this.IsMicrophoneInUse = false;
+            this.IsWebcamInUse = false;
+            GetUsage(RegistryHive.LocalMachine, DeviceType.Microhpone);
+            GetUsage(RegistryHive.LocalMachine, DeviceType.Webcam);
+            GetUsage(RegistryHive.CurrentUser, DeviceType.Microhpone);
+            GetUsage(RegistryHive.CurrentUser, DeviceType.Webcam);
         }
 
         private RegistryKey GetRegistryHive(RegistryHive Hive)
@@ -97,24 +116,20 @@ namespace BusyBlinkenlichten
             return RegistryKey.OpenBaseKey(Hive, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
         }
 
-        public void GetUsage(DeviceType Device)
+        private void GetUsage(RegistryHive Hive, DeviceType Device)
         {
             string dev = "microphone";
             switch (Device)
             {
                 case DeviceType.Microhpone:
                     dev = "microphone";
-                    MicrophoneApps.Clear();
-                    this.IsMicrophoneInUse = false;
                     break;
                 case DeviceType.Webcam:
                     dev = "webcam";
-                    WebcamApps.Clear();
-                    this.IsWebcamInUse = false;
                     break;
             }
 
-            RegistryKey basekey = GetRegistryHive(RegistryHive.LocalMachine).OpenSubKey(
+            RegistryKey basekey = GetRegistryHive(Hive).OpenSubKey(
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\" + dev + @"\");
 
             // Windows Apps
@@ -123,13 +138,21 @@ namespace BusyBlinkenlichten
             {
                 if (sub == "NonPackaged")
                     continue;
-                long lastUsedTimeStart = (long)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStart");
-                long lastUsedTimeStop = (long)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStop");
+
+                long? lastUsedTimeStart = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStart");
+                long? lastUsedTimeStop = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStop");
+
+                if (lastUsedTimeStop == null)
+                    continue;
+
                 AppInformation ai = new AppInformation();
                 ai.WindowsApp = true;
                 ai.SubKey = sub;
-                ai.LastUsedTimeStart = lastUsedTimeStart;
-                ai.LastUsedTimeStop = lastUsedTimeStop;
+                ai.Hive = Hive;
+
+                ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
+                ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
+
                 if (Device == DeviceType.Microhpone)
                 {
                     if (ai.InUse)
@@ -149,13 +172,19 @@ namespace BusyBlinkenlichten
             string[] subsNonPackaged = basekey.OpenSubKey("NonPackaged").GetSubKeyNames();
             foreach (string sub in subsNonPackaged)
             {
-                long lastUsedTimeStart = (long)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStart");
-                long lastUsedTimeStop = (long)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStop");
+                long? lastUsedTimeStart = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStart");
+                long? lastUsedTimeStop = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStop");
+
+                if (lastUsedTimeStop == null)
+                    continue;
+
                 AppInformation ai = new AppInformation();
-                ai.WindowsApp = true;
+                ai.WindowsApp = false;
                 ai.SubKey = sub;
-                ai.LastUsedTimeStart = lastUsedTimeStart;
-                ai.LastUsedTimeStop = lastUsedTimeStop;
+                ai.Hive = Hive;
+                ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
+                ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
+
                 if (Device == DeviceType.Microhpone)
                 {
                     if (ai.InUse)
