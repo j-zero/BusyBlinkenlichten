@@ -20,14 +20,46 @@ namespace BusyBlinkenlichten
 
         DeviceUsageDetection deviceUsageDetection;
         SerialPort serialPort;
-
+        bool allowExit = false;
         public Form1()
         {
             InitializeComponent();
             deviceUsageDetection = new DeviceUsageDetection();
             deviceUsageDetection.DeviceUsageDetected += DeviceUsageDetection_DeviceUsageDetected;
             RefreshPorts();
+
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
         }
+
+        private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            switch (e.Reason)
+            {
+                case SessionSwitchReason.SessionLock:
+                case SessionSwitchReason.SessionLogoff:
+                    SetColorRGB(0, 0, 0);
+                    break;
+                case SessionSwitchReason.SessionUnlock:
+                    Blinkenlichten();
+                    break;
+
+            }
+        }
+
+        private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            switch (e.Mode)
+            {
+                case PowerModes.Suspend:
+                    SetColorRGB(0, 0, 0);
+                    break;
+                case PowerModes.Resume:
+                    Blinkenlichten();
+                    break;
+            }
+        }
+
         void RefreshPorts()
         {
             cmbPorts.Items.Clear();
@@ -115,7 +147,7 @@ namespace BusyBlinkenlichten
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Hide();
-            e.Cancel = true;
+            e.Cancel = !allowExit;
         }
 
         private void notifyIcon1_Click(object sender, EventArgs e)
@@ -179,8 +211,9 @@ namespace BusyBlinkenlichten
 
         void Exit()
         {
+            allowExit = true;
             SetColorRGB(0, 0, 0);
-            if (serialPort.IsOpen)
+            if (serialPort != null && serialPort.IsOpen)
                 serialPort.Close();
             Application.Exit();
         }
