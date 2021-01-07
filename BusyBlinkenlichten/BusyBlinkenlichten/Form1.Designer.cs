@@ -56,6 +56,7 @@
             this.lblBlinkColor = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.lblsetBlinkColor = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -166,7 +167,7 @@
             this.btnConnect.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConnect.Location = new System.Drawing.Point(194, 12);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(95, 23);
+            this.btnConnect.Size = new System.Drawing.Size(72, 23);
             this.btnConnect.TabIndex = 9;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -314,9 +315,9 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(295, 11);
+            this.button1.Location = new System.Drawing.Point(272, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
+            this.button1.Size = new System.Drawing.Size(83, 23);
             this.button1.TabIndex = 23;
             this.button1.Text = "Disconnect";
             this.button1.UseVisualStyleBackColor = true;
@@ -333,11 +334,23 @@
             this.lblsetBlinkColor.UseVisualStyleBackColor = true;
             this.lblsetBlinkColor.Click += new System.EventHandler(this.lblsetBlinkColor_Click);
             // 
+            // btnExit
+            // 
+            this.btnExit.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExit.Location = new System.Drawing.Point(382, 12);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(56, 23);
+            this.btnExit.TabIndex = 25;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 351);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lblsetBlinkColor);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label5);
@@ -404,6 +417,7 @@
         private System.Windows.Forms.Label lblBlinkColor;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button lblsetBlinkColor;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 

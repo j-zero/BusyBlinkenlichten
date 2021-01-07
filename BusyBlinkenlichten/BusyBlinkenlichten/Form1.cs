@@ -186,5 +186,10 @@ namespace BusyBlinkenlichten
                 serialPort.Close();
             Application.Exit();
         }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Exit();
+        }
     }
 }
