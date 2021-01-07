@@ -9,6 +9,8 @@ CRGB leds[LED_COUNT];
 CRGB solidColor = CHSV(160,255,255);
 CRGB blinkColor = CHSV(0,0,0);
 
+uint16_t heartbeat = 1000;
+
 uint8_t blinkEnabled = 0;
 uint8_t blinkState = 0;
 uint16_t blinkInterval = 500;
@@ -18,6 +20,7 @@ uint16_t fadeDelay = 5;
 uint16_t fadeValue = 0;
 uint16_t fadeDirection = 1;
 
+unsigned long previousMillisHeartBeat = 0;
 unsigned long previousMillisBlink = 0;
 unsigned long previousMillisFade = 0;
 
@@ -48,11 +51,18 @@ void loop() {
     static uint8_t b1 = 0;
     static uint8_t b2 = 0;
     static uint8_t b3 = 0;
+    
+    unsigned long currentMillis = millis();
 
+    // Heartbeat
+    if (currentMillis - previousMillisHeartBeat >= heartbeat) {
+      previousMillisHeartBeat = currentMillis;
+      Serial.println("heartbeat");
+    }
+    
     // Blink
-    unsigned long currentMillisBlink = millis();
-    if (currentMillisBlink - previousMillisBlink >= blinkInterval) {
-      previousMillisBlink = currentMillisBlink;
+    if (currentMillis - previousMillisBlink >= blinkInterval) {
+      previousMillisBlink = currentMillis;
       if(blinkState == 0)
         blinkState = 1;
       else
@@ -60,9 +70,8 @@ void loop() {
     }
 
     // Fade
-    unsigned long currentMillisFade = millis();
-    if (currentMillisFade - previousMillisFade >= fadeDelay) {
-      previousMillisFade = currentMillisFade;
+    if (currentMillis - previousMillisFade >= fadeDelay) {
+      previousMillisFade = currentMillis;
       if(fadeDirection == 0) {  // Up
         if (fadeValue == 255) {
           fadeDirection = 1;  // Go Down
@@ -111,6 +120,7 @@ void loop() {
           case 0x02: // Blink On
               // 0x02 = Blink, 0x00/0x01 = Blink On/Off, 0x01 << 8 + 0xF4 = 500ms; 
               blinkEnabled = b1;
+              fadeEnabled = 0;
               blinkInterval = (b2 << 8) + b3;
               break;
           case 0x03: // Blink Color HSV
@@ -122,10 +132,8 @@ void loop() {
           case 0x05: // Fade On
               // 0x05 = Blink, 0x00/0x01 = Blink On/Off, 0x02 = 2ms delay, 0x00 = reserved; 
               fadeEnabled = b1;
+              blinkEnabled = 0;
               fadeDelay = b2;
-              if(fadeEnabled == 0x00)
-                LEDS.setBrightness(255);
-              
               break;
           case 0xf0: // Settings
               LEDS.setBrightness(b1);
@@ -139,13 +147,16 @@ void loop() {
 
   for(int i = 0; i < LED_COUNT; i++) {
       if(blinkEnabled){
+        LEDS.setBrightness(255);
         leds[i] = blinkState ? solidColor : blinkColor;
       }
       else if(fadeEnabled){
+        leds[i] = solidColor;
         LEDS.setBrightness(fadeValue);
       }
       else{
-         leds[i] = solidColor;
+        LEDS.setBrightness(255);
+        leds[i] = solidColor;
       }
       
   }

@@ -58,6 +58,11 @@
             this.lblsetBlinkColor = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.chkFade = new System.Windows.Forms.CheckBox();
+            this.tbBlinkSpeed = new System.Windows.Forms.TrackBar();
+            this.chkBlinkWebcam = new System.Windows.Forms.CheckBox();
+            this.chkBlinkMic = new System.Windows.Forms.CheckBox();
+            this.chkBlinkFree = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -191,7 +196,7 @@
             // 
             this.lblColor.BackColor = System.Drawing.Color.Blue;
             this.lblColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblColor.Location = new System.Drawing.Point(293, 172);
+            this.lblColor.Location = new System.Drawing.Point(337, 172);
             this.lblColor.Name = "lblColor";
             this.lblColor.Size = new System.Drawing.Size(32, 32);
             this.lblColor.TabIndex = 11;
@@ -200,7 +205,7 @@
             // btnSetCustom
             // 
             this.btnSetCustom.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSetCustom.Location = new System.Drawing.Point(330, 177);
+            this.btnSetCustom.Location = new System.Drawing.Point(374, 177);
             this.btnSetCustom.Name = "btnSetCustom";
             this.btnSetCustom.Size = new System.Drawing.Size(108, 27);
             this.btnSetCustom.TabIndex = 12;
@@ -212,7 +217,7 @@
             // 
             this.lblWebcamColor.BackColor = System.Drawing.Color.Red;
             this.lblWebcamColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblWebcamColor.Location = new System.Drawing.Point(132, 139);
+            this.lblWebcamColor.Location = new System.Drawing.Point(92, 138);
             this.lblWebcamColor.Name = "lblWebcamColor";
             this.lblWebcamColor.Size = new System.Drawing.Size(32, 32);
             this.lblWebcamColor.TabIndex = 13;
@@ -225,9 +230,9 @@
             this.label6.Location = new System.Drawing.Point(11, 140);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 15);
+            this.label6.Size = new System.Drawing.Size(55, 15);
             this.label6.TabIndex = 14;
-            this.label6.Text = "Webcam Color:";
+            this.label6.Text = "Webcam";
             // 
             // label7
             // 
@@ -236,15 +241,15 @@
             this.label7.Location = new System.Drawing.Point(11, 172);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(110, 15);
+            this.label7.Size = new System.Drawing.Size(74, 15);
             this.label7.TabIndex = 16;
-            this.label7.Text = "Microphone Color:";
+            this.label7.Text = "Microphone";
             // 
             // lblMicColor
             // 
             this.lblMicColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.lblMicColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblMicColor.Location = new System.Drawing.Point(132, 171);
+            this.lblMicColor.Location = new System.Drawing.Point(92, 170);
             this.lblMicColor.Name = "lblMicColor";
             this.lblMicColor.Size = new System.Drawing.Size(32, 32);
             this.lblMicColor.TabIndex = 15;
@@ -257,15 +262,15 @@
             this.label9.Location = new System.Drawing.Point(11, 204);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 15);
+            this.label9.Size = new System.Drawing.Size(30, 15);
             this.label9.TabIndex = 18;
-            this.label9.Text = "Free Color:";
+            this.label9.Text = "Free";
             // 
             // lblFreeColor
             // 
             this.lblFreeColor.BackColor = System.Drawing.Color.Lime;
             this.lblFreeColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblFreeColor.Location = new System.Drawing.Point(132, 203);
+            this.lblFreeColor.Location = new System.Drawing.Point(92, 203);
             this.lblFreeColor.Name = "lblFreeColor";
             this.lblFreeColor.Size = new System.Drawing.Size(32, 32);
             this.lblFreeColor.TabIndex = 17;
@@ -275,7 +280,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(172, 173);
+            this.label11.Location = new System.Drawing.Point(216, 173);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(84, 15);
@@ -298,7 +303,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(172, 139);
+            this.label5.Location = new System.Drawing.Point(216, 139);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 15);
@@ -309,7 +314,7 @@
             // 
             this.lblBlinkColor.BackColor = System.Drawing.Color.Black;
             this.lblBlinkColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBlinkColor.Location = new System.Drawing.Point(293, 139);
+            this.lblBlinkColor.Location = new System.Drawing.Point(337, 139);
             this.lblBlinkColor.Name = "lblBlinkColor";
             this.lblBlinkColor.Size = new System.Drawing.Size(32, 32);
             this.lblBlinkColor.TabIndex = 21;
@@ -329,7 +334,7 @@
             // lblsetBlinkColor
             // 
             this.lblsetBlinkColor.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblsetBlinkColor.Location = new System.Drawing.Point(331, 139);
+            this.lblsetBlinkColor.Location = new System.Drawing.Point(375, 139);
             this.lblsetBlinkColor.Name = "lblsetBlinkColor";
             this.lblsetBlinkColor.Size = new System.Drawing.Size(108, 27);
             this.lblsetBlinkColor.TabIndex = 24;
@@ -360,11 +365,63 @@
             this.chkFade.UseVisualStyleBackColor = true;
             this.chkFade.CheckedChanged += new System.EventHandler(this.chkFade_CheckedChanged);
             // 
+            // tbBlinkSpeed
+            // 
+            this.tbBlinkSpeed.Location = new System.Drawing.Point(219, 217);
+            this.tbBlinkSpeed.Maximum = 5000;
+            this.tbBlinkSpeed.Minimum = 10;
+            this.tbBlinkSpeed.Name = "tbBlinkSpeed";
+            this.tbBlinkSpeed.Size = new System.Drawing.Size(123, 45);
+            this.tbBlinkSpeed.TabIndex = 27;
+            this.tbBlinkSpeed.TickFrequency = 1000;
+            this.tbBlinkSpeed.Value = 500;
+            this.tbBlinkSpeed.Scroll += new System.EventHandler(this.tbBlinkSpeed_Scroll);
+            // 
+            // chkBlinkWebcam
+            // 
+            this.chkBlinkWebcam.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkBlinkWebcam.Location = new System.Drawing.Point(130, 138);
+            this.chkBlinkWebcam.Name = "chkBlinkWebcam";
+            this.chkBlinkWebcam.Size = new System.Drawing.Size(50, 27);
+            this.chkBlinkWebcam.TabIndex = 28;
+            this.chkBlinkWebcam.Text = "Fade";
+            this.chkBlinkWebcam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkBlinkWebcam.UseVisualStyleBackColor = true;
+            this.chkBlinkWebcam.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
+            // 
+            // chkBlinkMic
+            // 
+            this.chkBlinkMic.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkBlinkMic.Location = new System.Drawing.Point(130, 170);
+            this.chkBlinkMic.Name = "chkBlinkMic";
+            this.chkBlinkMic.Size = new System.Drawing.Size(50, 27);
+            this.chkBlinkMic.TabIndex = 29;
+            this.chkBlinkMic.Text = "Fade";
+            this.chkBlinkMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkBlinkMic.UseVisualStyleBackColor = true;
+            this.chkBlinkMic.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
+            // 
+            // chkBlinkFree
+            // 
+            this.chkBlinkFree.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkBlinkFree.Location = new System.Drawing.Point(130, 203);
+            this.chkBlinkFree.Name = "chkBlinkFree";
+            this.chkBlinkFree.Size = new System.Drawing.Size(50, 27);
+            this.chkBlinkFree.TabIndex = 30;
+            this.chkBlinkFree.Text = "Fade";
+            this.chkBlinkFree.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkBlinkFree.UseVisualStyleBackColor = true;
+            this.chkBlinkFree.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(454, 523);
+            this.ClientSize = new System.Drawing.Size(500, 523);
+            this.Controls.Add(this.chkBlinkFree);
+            this.Controls.Add(this.chkBlinkMic);
+            this.Controls.Add(this.chkBlinkWebcam);
+            this.Controls.Add(this.tbBlinkSpeed);
             this.Controls.Add(this.chkFade);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lblsetBlinkColor);
@@ -400,6 +457,7 @@
             this.Text = "Busy Blinkenlichten";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -435,6 +493,10 @@
         private System.Windows.Forms.Button lblsetBlinkColor;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.CheckBox chkFade;
+        private System.Windows.Forms.TrackBar tbBlinkSpeed;
+        private System.Windows.Forms.CheckBox chkBlinkWebcam;
+        private System.Windows.Forms.CheckBox chkBlinkMic;
+        private System.Windows.Forms.CheckBox chkBlinkFree;
     }
 }
 

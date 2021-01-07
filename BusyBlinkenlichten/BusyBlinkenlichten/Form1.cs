@@ -95,14 +95,20 @@ namespace BusyBlinkenlichten
             if (deviceUsageDetection.IsWebcamInUse)
             {
                 SetColor(lblWebcamColor.BackColor);
+                SetFade(chkBlinkWebcam.Checked, 5);
+                //SetBlink(true, 500);
             }
             else if (deviceUsageDetection.IsMicrophoneInUse)
             {
                 SetColor(lblMicColor.BackColor);
+                SetFade(chkBlinkMic.Checked, 5);
+                //SetBlink(false, 500);
             }
             else
             {
                 SetColor(lblFreeColor.BackColor);
+                SetFade(chkBlinkFree.Checked, 5);
+                //SetBlink(false, 500);
             }
             
         }
@@ -128,10 +134,26 @@ namespace BusyBlinkenlichten
             SerialSendBytes(new byte[] { 0x00, h, s, v });
         }
 
+        void SetBlink(bool On, int Speed)
+        {
+            // 0x02 = Blink, 0x00/0x01 = Blink On/Off, 0x01 << 8 + 0xF4 = 500ms; 
+            byte OnOff = On ? (byte)0x01 : (byte)0x00;
+            byte speedUpper = (byte)((Speed & 0xFF00) >> 8);
+            byte speedLower = (byte)(Speed & 0xFF);
+            SerialSendBytes(new byte[] { 0x02, OnOff, speedUpper, speedLower });
+        }
+        void SetFade(bool On, byte Delay)
+        {
+            byte OnOff = On ? (byte)0x01 : (byte)0x00;
+            SerialSendBytes(new byte[] { 0x05, OnOff, Delay, 0x00 });
+        }
         void SerialSendBytes(byte[] bytes)
         {
             if (serialPort != null && serialPort.IsOpen)
+            {
                 serialPort.Write(bytes, 0x00, bytes.Length);
+                System.Threading.Thread.Sleep(10);
+            }
         }
 
         private void DeviceUsageDetection_DeviceUsageDetected()
@@ -192,15 +214,14 @@ namespace BusyBlinkenlichten
 
         private void chkBlink_CheckedChanged(object sender, EventArgs e)
         {
-            // 0x02 = Blink, 0x00/0x01 = Blink On/Off, 0x01 << 8 + 0xF4 = 500ms; 
-            // On
-            byte OnOff = chkBlink.Checked ? (byte)0x01 : (byte)0x00;
-            SerialSendBytes(new byte[] { 0x02, OnOff, 0x01, 0xF4 });
+            
+            SetBlink(chkBlink.Checked, 500);
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            SetColorRGB(0, 0, 0);
             serialPort.Close();
         }
 
@@ -225,8 +246,17 @@ namespace BusyBlinkenlichten
 
         private void chkFade_CheckedChanged(object sender, EventArgs e)
         {
-            byte OnOff = chkFade.Checked ? (byte)0x01 : (byte)0x00;
-            SerialSendBytes(new byte[] { 0x05, OnOff, 0x01, 0x00 });
+            SetFade(chkFade.Checked, 0x5);
+        }
+
+        private void tbBlinkSpeed_Scroll(object sender, EventArgs e)
+        {
+            SetBlink(chkBlink.Checked, tbBlinkSpeed.Value);
+        }
+
+        private void chkBlinkWebcam_CheckedChanged_1(object sender, EventArgs e)
+        {
+            Blinkenlichten();
         }
     }
 }
