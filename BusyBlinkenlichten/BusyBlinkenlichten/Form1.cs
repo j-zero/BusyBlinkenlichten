@@ -31,8 +31,11 @@ namespace BusyBlinkenlichten
         void RefreshPorts()
         {
             cmbPorts.Items.Clear();
-            cmbPorts.Items.AddRange(SerialPort.GetPortNames());
-            cmbPorts.SelectedIndex = 0;
+            string[] ports = SerialPort.GetPortNames();
+            cmbPorts.Items.AddRange(ports);
+            if(ports.Length > 0)
+                cmbPorts.SelectedIndex = 0;
+
         }
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -48,8 +51,8 @@ namespace BusyBlinkenlichten
             this.BeginInvoke(new SetTextDeleg(DataReceivedCallback), new object[] { data });
         }
 
-        private void DataReceivedCallback(string data) { 
-            textBox1.Text = data.Trim(); 
+        private void DataReceivedCallback(string data) {
+            textBox1.AppendText(data.Trim() + Environment.NewLine);
         }
 
         private void Blinkenlichten()
@@ -57,22 +60,17 @@ namespace BusyBlinkenlichten
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
             lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString();
 
-            
-
             if (deviceUsageDetection.IsWebcamInUse)
             {
                 SetColor(lblWebcamColor.BackColor);
-                //SetColorHSV(0, 255, 255);
             }
             else if (deviceUsageDetection.IsMicrophoneInUse)
             {
                 SetColor(lblMicColor.BackColor);
-                //SetColorHSV(32, 255, 255);
             }
             else
             {
                 SetColor(lblFreeColor.BackColor);
-                //SetColorHSV(96, 255, 255);
             }
             
         }
@@ -190,6 +188,12 @@ namespace BusyBlinkenlichten
         private void btnExit_Click(object sender, EventArgs e)
         {
             Exit();
+        }
+
+        private void chkFade_CheckedChanged(object sender, EventArgs e)
+        {
+            byte OnOff = chkFade.Checked ? (byte)0x01 : (byte)0x00;
+            SerialSendBytes(new byte[] { 0x05, OnOff, 0x01, 0x00 });
         }
     }
 }

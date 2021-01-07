@@ -57,6 +57,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lblsetBlinkColor = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.chkFade = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -113,10 +114,12 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(12, 316);
+            this.textBox1.Location = new System.Drawing.Point(14, 268);
+            this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(417, 23);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(417, 195);
             this.textBox1.TabIndex = 4;
             // 
             // btnOff
@@ -177,7 +180,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(11, 298);
+            this.label4.Location = new System.Drawing.Point(13, 250);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 15);
@@ -197,7 +200,7 @@
             // btnSetCustom
             // 
             this.btnSetCustom.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSetCustom.Location = new System.Drawing.Point(194, 94);
+            this.btnSetCustom.Location = new System.Drawing.Point(330, 177);
             this.btnSetCustom.Name = "btnSetCustom";
             this.btnSetCustom.Size = new System.Drawing.Size(108, 27);
             this.btnSetCustom.TabIndex = 12;
@@ -326,7 +329,7 @@
             // lblsetBlinkColor
             // 
             this.lblsetBlinkColor.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblsetBlinkColor.Location = new System.Drawing.Point(308, 94);
+            this.lblsetBlinkColor.Location = new System.Drawing.Point(331, 139);
             this.lblsetBlinkColor.Name = "lblsetBlinkColor";
             this.lblsetBlinkColor.Size = new System.Drawing.Size(108, 27);
             this.lblsetBlinkColor.TabIndex = 24;
@@ -345,11 +348,24 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // chkFade
+            // 
+            this.chkFade.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkFade.Location = new System.Drawing.Point(194, 94);
+            this.chkFade.Name = "chkFade";
+            this.chkFade.Size = new System.Drawing.Size(50, 27);
+            this.chkFade.TabIndex = 26;
+            this.chkFade.Text = "Fade";
+            this.chkFade.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkFade.UseVisualStyleBackColor = true;
+            this.chkFade.CheckedChanged += new System.EventHandler(this.chkFade_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 351);
+            this.ClientSize = new System.Drawing.Size(454, 523);
+            this.Controls.Add(this.chkFade);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lblsetBlinkColor);
             this.Controls.Add(this.button1);
@@ -418,6 +434,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button lblsetBlinkColor;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.CheckBox chkFade;
     }
 }
 
