@@ -1,2 +1,2 @@
 # BusyBlinkenlichten
-Simple Busylight Control For Windows
+Simple busylight control for Windows 10 (1903)
