@@ -147,6 +147,12 @@ namespace BusyBlinkenlichten
             byte OnOff = On ? (byte)0x01 : (byte)0x00;
             SerialSendBytes(new byte[] { 0x05, OnOff, Delay, 0x00 });
         }
+
+        void SetSettings(byte MaxBrightness)
+        {
+            SerialSendBytes(new byte[] { 0xF0, MaxBrightness, 0x00, 0x00 });
+        }
+
         void SerialSendBytes(byte[] bytes)
         {
             if (serialPort != null && serialPort.IsOpen)
@@ -257,6 +263,11 @@ namespace BusyBlinkenlichten
         private void chkBlinkWebcam_CheckedChanged_1(object sender, EventArgs e)
         {
             Blinkenlichten();
+        }
+
+        private void tbBrightness_Scroll(object sender, EventArgs e)
+        {
+            SetSettings((byte)tbBrightness.Value);
         }
     }
 }

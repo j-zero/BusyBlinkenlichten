@@ -62,7 +62,9 @@
             this.chkBlinkWebcam = new System.Windows.Forms.CheckBox();
             this.chkBlinkMic = new System.Windows.Forms.CheckBox();
             this.chkBlinkFree = new System.Windows.Forms.CheckBox();
+            this.tbBrightness = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -119,12 +121,12 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(14, 268);
+            this.textBox1.Location = new System.Drawing.Point(14, 366);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(417, 195);
+            this.textBox1.Size = new System.Drawing.Size(286, 145);
             this.textBox1.TabIndex = 4;
             // 
             // btnOff
@@ -185,7 +187,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(13, 250);
+            this.label4.Location = new System.Drawing.Point(13, 348);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 15);
@@ -196,7 +198,7 @@
             // 
             this.lblColor.BackColor = System.Drawing.Color.Blue;
             this.lblColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblColor.Location = new System.Drawing.Point(337, 172);
+            this.lblColor.Location = new System.Drawing.Point(338, 226);
             this.lblColor.Name = "lblColor";
             this.lblColor.Size = new System.Drawing.Size(32, 32);
             this.lblColor.TabIndex = 11;
@@ -205,7 +207,7 @@
             // btnSetCustom
             // 
             this.btnSetCustom.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSetCustom.Location = new System.Drawing.Point(374, 177);
+            this.btnSetCustom.Location = new System.Drawing.Point(375, 231);
             this.btnSetCustom.Name = "btnSetCustom";
             this.btnSetCustom.Size = new System.Drawing.Size(108, 27);
             this.btnSetCustom.TabIndex = 12;
@@ -280,7 +282,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(216, 173);
+            this.label11.Location = new System.Drawing.Point(217, 227);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(84, 15);
@@ -367,11 +369,11 @@
             // 
             // tbBlinkSpeed
             // 
-            this.tbBlinkSpeed.Location = new System.Drawing.Point(219, 217);
+            this.tbBlinkSpeed.Location = new System.Drawing.Point(219, 170);
             this.tbBlinkSpeed.Maximum = 5000;
             this.tbBlinkSpeed.Minimum = 10;
             this.tbBlinkSpeed.Name = "tbBlinkSpeed";
-            this.tbBlinkSpeed.Size = new System.Drawing.Size(123, 45);
+            this.tbBlinkSpeed.Size = new System.Drawing.Size(269, 45);
             this.tbBlinkSpeed.TabIndex = 27;
             this.tbBlinkSpeed.TickFrequency = 1000;
             this.tbBlinkSpeed.Value = 500;
@@ -413,11 +415,23 @@
             this.chkBlinkFree.UseVisualStyleBackColor = true;
             this.chkBlinkFree.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
             // 
+            // tbBrightness
+            // 
+            this.tbBrightness.Location = new System.Drawing.Point(220, 43);
+            this.tbBrightness.Maximum = 255;
+            this.tbBrightness.Name = "tbBrightness";
+            this.tbBrightness.Size = new System.Drawing.Size(269, 45);
+            this.tbBrightness.TabIndex = 31;
+            this.tbBrightness.TickFrequency = 5;
+            this.tbBrightness.Value = 128;
+            this.tbBrightness.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 523);
+            this.Controls.Add(this.tbBrightness);
             this.Controls.Add(this.chkBlinkFree);
             this.Controls.Add(this.chkBlinkMic);
             this.Controls.Add(this.chkBlinkWebcam);
@@ -458,6 +472,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -497,6 +512,7 @@
         private System.Windows.Forms.CheckBox chkBlinkWebcam;
         private System.Windows.Forms.CheckBox chkBlinkMic;
         private System.Windows.Forms.CheckBox chkBlinkFree;
+        private System.Windows.Forms.TrackBar tbBrightness;
     }
 }
 
