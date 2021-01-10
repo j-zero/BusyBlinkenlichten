@@ -121,12 +121,12 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(14, 366);
+            this.textBox1.Location = new System.Drawing.Point(14, 342);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(286, 145);
+            this.textBox1.Size = new System.Drawing.Size(469, 89);
             this.textBox1.TabIndex = 4;
             // 
             // btnOff
@@ -187,7 +187,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(13, 348);
+            this.label4.Location = new System.Drawing.Point(13, 324);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 15);
@@ -198,7 +198,7 @@
             // 
             this.lblColor.BackColor = System.Drawing.Color.Blue;
             this.lblColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblColor.Location = new System.Drawing.Point(338, 226);
+            this.lblColor.Location = new System.Drawing.Point(92, 267);
             this.lblColor.Name = "lblColor";
             this.lblColor.Size = new System.Drawing.Size(32, 32);
             this.lblColor.TabIndex = 11;
@@ -207,7 +207,7 @@
             // btnSetCustom
             // 
             this.btnSetCustom.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSetCustom.Location = new System.Drawing.Point(375, 231);
+            this.btnSetCustom.Location = new System.Drawing.Point(131, 267);
             this.btnSetCustom.Name = "btnSetCustom";
             this.btnSetCustom.Size = new System.Drawing.Size(108, 27);
             this.btnSetCustom.TabIndex = 12;
@@ -282,12 +282,12 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(217, 227);
+            this.label11.Location = new System.Drawing.Point(11, 269);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(84, 15);
+            this.label11.Size = new System.Drawing.Size(48, 15);
             this.label11.TabIndex = 19;
-            this.label11.Text = "Custom Color:";
+            this.label11.Text = "Custom";
             // 
             // chkBlink
             // 
@@ -305,18 +305,18 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(216, 139);
+            this.label5.Location = new System.Drawing.Point(11, 238);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 15);
+            this.label5.Size = new System.Drawing.Size(35, 15);
             this.label5.TabIndex = 22;
-            this.label5.Text = "Blink Color:";
+            this.label5.Text = "Blink";
             // 
             // lblBlinkColor
             // 
             this.lblBlinkColor.BackColor = System.Drawing.Color.Black;
             this.lblBlinkColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBlinkColor.Location = new System.Drawing.Point(337, 139);
+            this.lblBlinkColor.Location = new System.Drawing.Point(92, 235);
             this.lblBlinkColor.Name = "lblBlinkColor";
             this.lblBlinkColor.Size = new System.Drawing.Size(32, 32);
             this.lblBlinkColor.TabIndex = 21;
@@ -336,9 +336,9 @@
             // lblsetBlinkColor
             // 
             this.lblsetBlinkColor.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblsetBlinkColor.Location = new System.Drawing.Point(375, 139);
+            this.lblsetBlinkColor.Location = new System.Drawing.Point(130, 236);
             this.lblsetBlinkColor.Name = "lblsetBlinkColor";
-            this.lblsetBlinkColor.Size = new System.Drawing.Size(108, 27);
+            this.lblsetBlinkColor.Size = new System.Drawing.Size(109, 27);
             this.lblsetBlinkColor.TabIndex = 24;
             this.lblsetBlinkColor.Text = "Set Blink Color";
             this.lblsetBlinkColor.UseVisualStyleBackColor = true;
@@ -369,11 +369,11 @@
             // 
             // tbBlinkSpeed
             // 
-            this.tbBlinkSpeed.Location = new System.Drawing.Point(219, 170);
+            this.tbBlinkSpeed.Location = new System.Drawing.Point(246, 237);
             this.tbBlinkSpeed.Maximum = 5000;
             this.tbBlinkSpeed.Minimum = 10;
             this.tbBlinkSpeed.Name = "tbBlinkSpeed";
-            this.tbBlinkSpeed.Size = new System.Drawing.Size(269, 45);
+            this.tbBlinkSpeed.Size = new System.Drawing.Size(192, 45);
             this.tbBlinkSpeed.TabIndex = 27;
             this.tbBlinkSpeed.TickFrequency = 1000;
             this.tbBlinkSpeed.Value = 500;
@@ -430,7 +430,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 523);
+            this.ClientSize = new System.Drawing.Size(500, 446);
             this.Controls.Add(this.tbBrightness);
             this.Controls.Add(this.chkBlinkFree);
             this.Controls.Add(this.chkBlinkMic);

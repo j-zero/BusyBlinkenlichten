@@ -199,6 +199,8 @@ namespace BusyBlinkenlichten
         {
             serialPort = new SerialPort(cmbPorts.Text, 115200);
             serialPort.Open();
+            serialPort.DtrEnable = true;
+            serialPort.RtsEnable = true;
             serialPort.DataReceived += SerialPort_DataReceived;
             Blinkenlichten();
         }
