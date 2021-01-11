@@ -68,6 +68,7 @@
             this.chkForceMic = new System.Windows.Forms.CheckBox();
             this.chkForceFree = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblHeartbeat = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -76,7 +77,7 @@
             // notifyIcon1
             // 
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "BusyBlinkenlichten";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
             // 
@@ -138,9 +139,9 @@
             // btnOff
             // 
             this.btnOff.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOff.Location = new System.Drawing.Point(75, 94);
+            this.btnOff.Location = new System.Drawing.Point(131, 94);
             this.btnOff.Name = "btnOff";
-            this.btnOff.Size = new System.Drawing.Size(57, 27);
+            this.btnOff.Size = new System.Drawing.Size(60, 27);
             this.btnOff.TabIndex = 5;
             this.btnOff.Text = "Off";
             this.btnOff.UseVisualStyleBackColor = true;
@@ -151,9 +152,9 @@
             this.btnOn.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOn.Location = new System.Drawing.Point(14, 94);
             this.btnOn.Name = "btnOn";
-            this.btnOn.Size = new System.Drawing.Size(55, 27);
+            this.btnOn.Size = new System.Drawing.Size(110, 27);
             this.btnOn.TabIndex = 6;
-            this.btnOn.Text = "On";
+            this.btnOn.Text = "Blinkenlichten!";
             this.btnOn.UseVisualStyleBackColor = true;
             this.btnOn.Click += new System.EventHandler(this.btnOn_Click);
             // 
@@ -299,7 +300,7 @@
             // chkBlink
             // 
             this.chkBlink.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkBlink.Location = new System.Drawing.Point(138, 94);
+            this.chkBlink.Location = new System.Drawing.Point(216, 94);
             this.chkBlink.Name = "chkBlink";
             this.chkBlink.Size = new System.Drawing.Size(50, 27);
             this.chkBlink.TabIndex = 20;
@@ -366,7 +367,7 @@
             // chkFade
             // 
             this.chkFade.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkFade.Location = new System.Drawing.Point(194, 94);
+            this.chkFade.Location = new System.Drawing.Point(272, 94);
             this.chkFade.Name = "chkFade";
             this.chkFade.Size = new System.Drawing.Size(50, 27);
             this.chkFade.TabIndex = 26;
@@ -425,10 +426,10 @@
             // 
             // tbBrightness
             // 
-            this.tbBrightness.Location = new System.Drawing.Point(220, 43);
+            this.tbBrightness.Location = new System.Drawing.Point(186, 43);
             this.tbBrightness.Maximum = 255;
             this.tbBrightness.Name = "tbBrightness";
-            this.tbBrightness.Size = new System.Drawing.Size(269, 45);
+            this.tbBrightness.Size = new System.Drawing.Size(297, 45);
             this.tbBrightness.TabIndex = 31;
             this.tbBrightness.TickFrequency = 5;
             this.tbBrightness.Value = 128;
@@ -437,7 +438,7 @@
             // chkRainbow
             // 
             this.chkRainbow.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkRainbow.Location = new System.Drawing.Point(250, 94);
+            this.chkRainbow.Location = new System.Drawing.Point(331, 94);
             this.chkRainbow.Name = "chkRainbow";
             this.chkRainbow.Size = new System.Drawing.Size(66, 27);
             this.chkRainbow.TabIndex = 32;
@@ -492,11 +493,22 @@
             this.pictureBox1.TabIndex = 36;
             this.pictureBox1.TabStop = false;
             // 
+            // lblHeartbeat
+            // 
+            this.lblHeartbeat.AutoSize = true;
+            this.lblHeartbeat.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHeartbeat.Location = new System.Drawing.Point(361, 12);
+            this.lblHeartbeat.Name = "lblHeartbeat";
+            this.lblHeartbeat.Size = new System.Drawing.Size(31, 23);
+            this.lblHeartbeat.TabIndex = 37;
+            this.lblHeartbeat.Text = "♥";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 446);
+            this.Controls.Add(this.lblHeartbeat);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.chkForceFree);
             this.Controls.Add(this.chkForceMic);
@@ -590,6 +602,7 @@
         private System.Windows.Forms.CheckBox chkForceMic;
         private System.Windows.Forms.CheckBox chkForceFree;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblHeartbeat;
     }
 }
 

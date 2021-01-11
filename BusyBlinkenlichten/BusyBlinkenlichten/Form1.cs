@@ -21,6 +21,7 @@ namespace BusyBlinkenlichten
         DeviceUsageDetection deviceUsageDetection;
         SerialPort serialPort;
         bool allowExit = false;
+        bool heartbeat = false;
         public Form1()
         {
             InitializeComponent();
@@ -80,7 +81,13 @@ namespace BusyBlinkenlichten
             {
                 WriteLog("(E) Cannot read line from serial port!");
             }
-            this.BeginInvoke(new SetTextDeleg(WriteLog), new object[] { data });
+            if(!data.StartsWith("heartbeat"))
+                this.BeginInvoke(new SetTextDeleg(WriteLog), new object[] { data });
+            else
+            {
+                this.heartbeat = !this.heartbeat;
+                lblHeartbeat.ForeColor = this.heartbeat ? Color.Red : Color.Black;
+            }
         }
 
         private void WriteLog(string data) {
@@ -277,6 +284,8 @@ namespace BusyBlinkenlichten
                 serialPort.Close();
                 btnDisconnect.Enabled = false;
                 btnConnect.Enabled = true;
+                this.heartbeat = false;
+                lblHeartbeat.ForeColor = this.heartbeat ? Color.Red : Color.Black;
             }
             catch
             {
