@@ -54,7 +54,7 @@
             this.chkBlink = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lblBlinkColor = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnDisconnect = new System.Windows.Forms.Button();
             this.lblsetBlinkColor = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.chkFade = new System.Windows.Forms.CheckBox();
@@ -63,8 +63,14 @@
             this.chkBlinkMic = new System.Windows.Forms.CheckBox();
             this.chkBlinkFree = new System.Windows.Forms.CheckBox();
             this.tbBrightness = new System.Windows.Forms.TrackBar();
+            this.chkRainbow = new System.Windows.Forms.CheckBox();
+            this.chkForceWebcam = new System.Windows.Forms.CheckBox();
+            this.chkForceMic = new System.Windows.Forms.CheckBox();
+            this.chkForceFree = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -160,6 +166,7 @@
             this.cmbPorts.Name = "cmbPorts";
             this.cmbPorts.Size = new System.Drawing.Size(140, 23);
             this.cmbPorts.TabIndex = 7;
+            this.cmbPorts.DropDown += new System.EventHandler(this.cmbPorts_DropDown);
             // 
             // label3
             // 
@@ -322,16 +329,17 @@
             this.lblBlinkColor.TabIndex = 21;
             this.lblBlinkColor.Click += new System.EventHandler(this.lblColor_Click);
             // 
-            // button1
+            // btnDisconnect
             // 
-            this.button1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(272, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(83, 23);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "Disconnect";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDisconnect.Enabled = false;
+            this.btnDisconnect.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDisconnect.Location = new System.Drawing.Point(272, 12);
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.Size = new System.Drawing.Size(83, 23);
+            this.btnDisconnect.TabIndex = 23;
+            this.btnDisconnect.Text = "Disconnect";
+            this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
             // lblsetBlinkColor
             // 
@@ -347,7 +355,7 @@
             // btnExit
             // 
             this.btnExit.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.Location = new System.Drawing.Point(382, 12);
+            this.btnExit.Location = new System.Drawing.Point(427, 11);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(56, 23);
             this.btnExit.TabIndex = 25;
@@ -373,7 +381,7 @@
             this.tbBlinkSpeed.Maximum = 5000;
             this.tbBlinkSpeed.Minimum = 10;
             this.tbBlinkSpeed.Name = "tbBlinkSpeed";
-            this.tbBlinkSpeed.Size = new System.Drawing.Size(192, 45);
+            this.tbBlinkSpeed.Size = new System.Drawing.Size(136, 45);
             this.tbBlinkSpeed.TabIndex = 27;
             this.tbBlinkSpeed.TickFrequency = 1000;
             this.tbBlinkSpeed.Value = 500;
@@ -382,7 +390,7 @@
             // chkBlinkWebcam
             // 
             this.chkBlinkWebcam.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkBlinkWebcam.Location = new System.Drawing.Point(130, 138);
+            this.chkBlinkWebcam.Location = new System.Drawing.Point(186, 140);
             this.chkBlinkWebcam.Name = "chkBlinkWebcam";
             this.chkBlinkWebcam.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkWebcam.TabIndex = 28;
@@ -394,7 +402,7 @@
             // chkBlinkMic
             // 
             this.chkBlinkMic.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkBlinkMic.Location = new System.Drawing.Point(130, 170);
+            this.chkBlinkMic.Location = new System.Drawing.Point(186, 173);
             this.chkBlinkMic.Name = "chkBlinkMic";
             this.chkBlinkMic.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkMic.TabIndex = 29;
@@ -406,7 +414,7 @@
             // chkBlinkFree
             // 
             this.chkBlinkFree.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkBlinkFree.Location = new System.Drawing.Point(130, 203);
+            this.chkBlinkFree.Location = new System.Drawing.Point(186, 206);
             this.chkBlinkFree.Name = "chkBlinkFree";
             this.chkBlinkFree.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkFree.TabIndex = 30;
@@ -426,11 +434,74 @@
             this.tbBrightness.Value = 128;
             this.tbBrightness.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
+            // chkRainbow
+            // 
+            this.chkRainbow.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkRainbow.Location = new System.Drawing.Point(250, 94);
+            this.chkRainbow.Name = "chkRainbow";
+            this.chkRainbow.Size = new System.Drawing.Size(66, 27);
+            this.chkRainbow.TabIndex = 32;
+            this.chkRainbow.Text = "Rainbow";
+            this.chkRainbow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkRainbow.UseVisualStyleBackColor = true;
+            this.chkRainbow.CheckedChanged += new System.EventHandler(this.chkRainbow_CheckedChanged);
+            // 
+            // chkForceWebcam
+            // 
+            this.chkForceWebcam.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkForceWebcam.Location = new System.Drawing.Point(130, 140);
+            this.chkForceWebcam.Name = "chkForceWebcam";
+            this.chkForceWebcam.Size = new System.Drawing.Size(50, 27);
+            this.chkForceWebcam.TabIndex = 33;
+            this.chkForceWebcam.Text = "Force";
+            this.chkForceWebcam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkForceWebcam.UseVisualStyleBackColor = true;
+            this.chkForceWebcam.CheckedChanged += new System.EventHandler(this.chkForceWebcam_CheckedChanged);
+            // 
+            // chkForceMic
+            // 
+            this.chkForceMic.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkForceMic.Location = new System.Drawing.Point(130, 173);
+            this.chkForceMic.Name = "chkForceMic";
+            this.chkForceMic.Size = new System.Drawing.Size(50, 27);
+            this.chkForceMic.TabIndex = 34;
+            this.chkForceMic.Text = "Force";
+            this.chkForceMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkForceMic.UseVisualStyleBackColor = true;
+            this.chkForceMic.CheckedChanged += new System.EventHandler(this.chkForceMic_CheckedChanged);
+            // 
+            // chkForceFree
+            // 
+            this.chkForceFree.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkForceFree.Location = new System.Drawing.Point(130, 206);
+            this.chkForceFree.Name = "chkForceFree";
+            this.chkForceFree.Size = new System.Drawing.Size(50, 27);
+            this.chkForceFree.TabIndex = 35;
+            this.chkForceFree.Text = "Force";
+            this.chkForceFree.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkForceFree.UseVisualStyleBackColor = true;
+            this.chkForceFree.CheckedChanged += new System.EventHandler(this.chkForceFree_CheckedChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pictureBox1.Location = new System.Drawing.Point(403, 94);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(80, 76);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 36;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 446);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.chkForceFree);
+            this.Controls.Add(this.chkForceMic);
+            this.Controls.Add(this.chkForceWebcam);
+            this.Controls.Add(this.chkRainbow);
             this.Controls.Add(this.tbBrightness);
             this.Controls.Add(this.chkBlinkFree);
             this.Controls.Add(this.chkBlinkMic);
@@ -439,7 +510,7 @@
             this.Controls.Add(this.chkFade);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lblsetBlinkColor);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnDisconnect);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblBlinkColor);
             this.Controls.Add(this.chkBlink);
@@ -473,6 +544,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -504,7 +576,7 @@
         private System.Windows.Forms.CheckBox chkBlink;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblBlinkColor;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button lblsetBlinkColor;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.CheckBox chkFade;
@@ -513,6 +585,11 @@
         private System.Windows.Forms.CheckBox chkBlinkMic;
         private System.Windows.Forms.CheckBox chkBlinkFree;
         private System.Windows.Forms.TrackBar tbBrightness;
+        private System.Windows.Forms.CheckBox chkRainbow;
+        private System.Windows.Forms.CheckBox chkForceWebcam;
+        private System.Windows.Forms.CheckBox chkForceMic;
+        private System.Windows.Forms.CheckBox chkForceFree;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

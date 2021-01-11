@@ -78,12 +78,12 @@ namespace BusyBlinkenlichten
             }
             catch
             {
-
+                WriteLog("(E) Cannot read line from serial port!");
             }
-            this.BeginInvoke(new SetTextDeleg(DataReceivedCallback), new object[] { data });
+            this.BeginInvoke(new SetTextDeleg(WriteLog), new object[] { data });
         }
 
-        private void DataReceivedCallback(string data) {
+        private void WriteLog(string data) {
             textBox1.AppendText(data.Trim() + Environment.NewLine);
         }
 
@@ -91,31 +91,37 @@ namespace BusyBlinkenlichten
         {
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
             lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString();
-
-            if (deviceUsageDetection.IsWebcamInUse)
+            if (!chkForceFree.Checked)
             {
-                SetColor(lblWebcamColor.BackColor);
-                SetFade(chkBlinkWebcam.Checked, 5);
-                //SetBlink(true, 500);
-            }
-            else if (deviceUsageDetection.IsMicrophoneInUse)
-            {
-                SetColor(lblMicColor.BackColor);
-                SetFade(chkBlinkMic.Checked, 5);
-                //SetBlink(false, 500);
+                if (deviceUsageDetection.IsWebcamInUse || chkForceWebcam.Checked)
+                {
+                    SetColor(lblWebcamColor.BackColor);
+                    SetFade(chkBlinkWebcam.Checked, 5);
+                }
+                else if (deviceUsageDetection.IsMicrophoneInUse || chkForceMic.Checked)
+                {
+                    SetColor(lblMicColor.BackColor);
+                    SetFade(chkBlinkMic.Checked, 5);
+                }
+                else
+                {
+                    SetColor(lblFreeColor.BackColor);
+                    SetFade(chkBlinkFree.Checked, 5);
+                }
             }
             else
             {
                 SetColor(lblFreeColor.BackColor);
                 SetFade(chkBlinkFree.Checked, 5);
-                //SetBlink(false, 500);
             }
-            
+
+
+
         }
 
         void SetColor(Color color)
         {
-            SerialSendBytes(new byte[] { 0x01, color.R, color.G, color.B });
+            SetColorRGB(color.R, color.G, color.B);
         }
 
         void SetColorBlinkColor(Color color)
@@ -126,6 +132,9 @@ namespace BusyBlinkenlichten
 
         void SetColorRGB(byte r, byte g, byte b)
         {
+            Image col = ImageManipulation.ReplaceColor(Properties.Resources.sirene_color, Color.Magenta, Color.FromArgb(r,g,b));
+            pictureBox1.Image = ImageManipulation.MatrixBlend(col, Properties.Resources.sirene_white, 1.0f);
+            SetFormIcon(pictureBox1.Image);
             SerialSendBytes(new byte[] { 0x01, r, g, b });
         }
 
@@ -147,6 +156,11 @@ namespace BusyBlinkenlichten
             byte OnOff = On ? (byte)0x01 : (byte)0x00;
             SerialSendBytes(new byte[] { 0x05, OnOff, Delay, 0x00 });
         }
+        void SetRainbow(bool On, byte Delay)
+        {
+            byte OnOff = On ? (byte)0x01 : (byte)0x00;
+            SerialSendBytes(new byte[] { 0x06, OnOff, Delay, 0x00 });
+        }
 
         void SetSettings(byte MaxBrightness)
         {
@@ -155,12 +169,31 @@ namespace BusyBlinkenlichten
 
         void SerialSendBytes(byte[] bytes)
         {
-            if (serialPort != null && serialPort.IsOpen)
+            try
             {
-                serialPort.Write(bytes, 0x00, bytes.Length);
-                System.Threading.Thread.Sleep(10);
+                if (serialPort != null && serialPort.IsOpen)
+                {
+                    serialPort.Write(bytes, 0x00, bytes.Length);
+                    System.Threading.Thread.Sleep(10);
+                }
+            }
+            catch(Exception ex)
+            {
+                WriteLog("(E) " + ex.Message);
             }
         }
+
+        private void SetFormIcon(Image img)
+        {
+            Bitmap b = (Bitmap)img;
+            IntPtr pIcon = b.GetHicon();
+            Icon i = Icon.FromHandle(pIcon);
+            this.Icon = i;
+            notifyIcon1.Icon = i;
+            i.Dispose();
+        }
+
+
 
         private void DeviceUsageDetection_DeviceUsageDetected()
         {
@@ -187,7 +220,7 @@ namespace BusyBlinkenlichten
 
         private void btnOff_Click(object sender, EventArgs e)
         {
-            SetColorRGB(0, 0, 0);
+            SetColor(Color.Black);
         }
 
         private void btnOn_Click(object sender, EventArgs e)
@@ -197,12 +230,21 @@ namespace BusyBlinkenlichten
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            serialPort = new SerialPort(cmbPorts.Text, 115200);
-            serialPort.Open();
-            serialPort.DtrEnable = true;
-            serialPort.RtsEnable = true;
-            serialPort.DataReceived += SerialPort_DataReceived;
-            Blinkenlichten();
+            try
+            {
+                serialPort = new SerialPort(cmbPorts.Text, 115200);
+                serialPort.Open();
+                serialPort.DtrEnable = true;
+                serialPort.RtsEnable = true;
+                serialPort.DataReceived += SerialPort_DataReceived;
+                Blinkenlichten();
+                btnDisconnect.Enabled = true;
+                btnConnect.Enabled = false;
+
+            }
+            catch
+            {
+            }
         }
 
         private void btnSetCustom_Click(object sender, EventArgs e)
@@ -227,10 +269,19 @@ namespace BusyBlinkenlichten
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            SetColorRGB(0, 0, 0);
-            serialPort.Close();
+            try
+            {
+                SetColor(Color.Black);
+                serialPort.Close();
+                btnDisconnect.Enabled = false;
+                btnConnect.Enabled = true;
+            }
+            catch
+            {
+
+            }
         }
 
         private void lblsetBlinkColor_Click(object sender, EventArgs e)
@@ -270,6 +321,31 @@ namespace BusyBlinkenlichten
         private void tbBrightness_Scroll(object sender, EventArgs e)
         {
             SetSettings((byte)tbBrightness.Value);
+        }
+
+        private void chkRainbow_CheckedChanged(object sender, EventArgs e)
+        {
+            SetRainbow(chkRainbow.Checked, 10);
+        }
+
+        private void cmbPorts_DropDown(object sender, EventArgs e)
+        {
+            RefreshPorts();
+        }
+
+        private void chkForceWebcam_CheckedChanged(object sender, EventArgs e)
+        {
+            Blinkenlichten();
+        }
+
+        private void chkForceMic_CheckedChanged(object sender, EventArgs e)
+        {
+            Blinkenlichten();
+        }
+
+        private void chkForceFree_CheckedChanged(object sender, EventArgs e)
+        {
+            Blinkenlichten();
         }
     }
 }

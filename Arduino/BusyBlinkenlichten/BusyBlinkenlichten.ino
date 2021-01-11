@@ -17,6 +17,8 @@ uint8_t blinkEnabled = 0;
 uint8_t blinkState = 0;
 uint16_t blinkInterval = 500;
 
+uint8_t rainbowEnabled = 0;
+uint8_t rainbowHue = 0;
 uint8_t fadeEnabled = 0;
 uint16_t fadeDelay = 5;
 uint16_t fadeValue = maxBrightness;
@@ -33,8 +35,6 @@ void setup() {
   LEDS.setBrightness(255);
   FastLED.clear();
 
-  static uint8_t hue = 0;
-  // First slide the led in one direction
   for(int i = 0; i < 255; i++) {
     for(int l = 0; l < LED_COUNT; l++){
       leds[l] = CHSV(i, 255, 255);
@@ -42,6 +42,8 @@ void setup() {
     FastLED.show(); 
     delay(5);
   }
+  
+  LEDS.setBrightness(maxBrightness);
   FastLED.show(); 
   
 }
@@ -73,6 +75,7 @@ void loop() {
 
     // Fade
     if (currentMillis - previousMillisFade >= fadeDelay) {
+      rainbowHue++;
       previousMillisFade = currentMillis;
       if(fadeDirection == 0) {  // Up
         if (fadeValue >= maxBrightness) {
@@ -124,6 +127,7 @@ void loop() {
               blinkEnabled = b1;
               blinkInterval = (b2 << 8) + b3;
               fadeEnabled = 0;
+              rainbowEnabled = 0;
               break;
           case 0x03: // Blink Color HSV
               blinkColor = CHSV(b1, b2, b3);
@@ -136,6 +140,14 @@ void loop() {
               fadeEnabled = b1;
               fadeDelay = b2;
               blinkEnabled = 0;
+              rainbowEnabled = 0;
+              break;
+          case 0x06: // Rainbow On
+              // 0x05 = Fade, 0x00/0x01 = Fade On/Off, 0x02 = 2ms delay, 0x00 = reserved; 
+              rainbowEnabled = b1;
+              fadeDelay = b2;
+              blinkEnabled = 0;
+              fadeEnabled = 0;
               break;
           case 0xf0: // Settings
               maxBrightness = b1;
@@ -156,6 +168,10 @@ void loop() {
       else if(fadeEnabled){
         leds[i] = solidColor;
         LEDS.setBrightness(fadeValue);
+      }
+      else if(rainbowEnabled){
+        LEDS.setBrightness(maxBrightness);
+        leds[i] = CHSV(rainbowHue, 255, 255);
       }
       else{
         LEDS.setBrightness(maxBrightness);
