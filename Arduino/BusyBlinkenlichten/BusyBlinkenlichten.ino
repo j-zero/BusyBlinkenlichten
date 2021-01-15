@@ -2,15 +2,17 @@
 #include <FastLED.h>      // https://github.com/FastLED/FastLED
 
 #define LED_COUNT 1
-#define LED_DATA_PIN 2
 
-CRGB leds[LED_COUNT];
+CRGB mainLeds[LED_COUNT];
+CRGB debugLeds[LED_COUNT];
 
-CRGB solidColor = CHSV(160,255,255);
+CRGB solidColor = CHSV(0,0,0);
 CRGB blinkColor = CHSV(0,0,0);
 
 
-uint8_t maxBrightness = 128;
+uint8_t maxBrightness = 255;
+uint8_t maxBrightnessDebugLed = 64;
+
 uint16_t heartbeat = 1000;
 
 uint8_t blinkEnabled = 0;
@@ -31,24 +33,26 @@ unsigned long previousMillisFade = 0;
 void setup() {
   
   Serial.begin (115200);
-  LEDS.addLeds<WS2812,LED_DATA_PIN,GRB>(leds,LED_COUNT).setCorrection(TypicalSMD5050);
+  LEDS.addLeds<WS2812,2,GRB>(mainLeds,LED_COUNT).setCorrection(TypicalSMD5050);
+  LEDS.addLeds<WS2812,3,GRB>(debugLeds,LED_COUNT).setCorrection(TypicalSMD5050);
   LEDS.setBrightness(255);
   FastLED.clear();
 
   for(int i = 0; i < 255; i++) {
     for(int l = 0; l < LED_COUNT; l++){
-      leds[l] = CHSV(i, 255, 255);
+      mainLeds[l] = CHSV(i, 255, 255);
+      debugLeds[l] = CHSV(255-i, 255, 255);
     }
     FastLED.show(); 
-    delay(5);
+    delay(10);
   }
+
+
   
   LEDS.setBrightness(maxBrightness);
   FastLED.show(); 
   
 }
-
-void fadeall() { for(int i = 0; i < LED_COUNT; i++) { leds[i].nscale8(250); } }
 
 void loop() {
     static uint8_t c = 0;
@@ -78,7 +82,7 @@ void loop() {
       rainbowHue++;
       previousMillisFade = currentMillis;
       if(fadeDirection == 0) {  // Up
-        if (fadeValue >= maxBrightness) {
+        if (fadeValue >= 255) {
           fadeDirection = 1;  // Go Down
         }
         else{
@@ -151,6 +155,7 @@ void loop() {
               break;
           case 0xf0: // Settings
               maxBrightness = b1;
+              maxBrightnessDebugLed = b2;
               //LEDS.setBrightness(maxBrightness);
               
               break;
@@ -162,22 +167,27 @@ void loop() {
 
   for(int i = 0; i < LED_COUNT; i++) {
       if(blinkEnabled){
-        LEDS.setBrightness(maxBrightness);
-        leds[i] = blinkState ? solidColor : blinkColor;
+        LEDS.setBrightness(255);
+        mainLeds[i] = blinkState ? solidColor : blinkColor;
+        debugLeds[i] = blinkState ? blinkColor : solidColor;
       }
       else if(fadeEnabled){
-        leds[i] = solidColor;
+        mainLeds[i] = solidColor;
+        debugLeds[i] = solidColor;
         LEDS.setBrightness(fadeValue);
       }
       else if(rainbowEnabled){
-        LEDS.setBrightness(maxBrightness);
-        leds[i] = CHSV(rainbowHue, 255, 255);
+        LEDS.setBrightness(255);
+        mainLeds[i] = CHSV(rainbowHue, 255, 255);
+        debugLeds[i] = CHSV(255-rainbowHue, 255, 255);
       }
       else{
-        LEDS.setBrightness(maxBrightness);
-        leds[i] = solidColor;
+        LEDS.setBrightness(255);
+        mainLeds[i] = solidColor;
+        debugLeds[i] = solidColor;
       }
-      
+      mainLeds[i].nscale8_video( maxBrightness );
+      debugLeds[i].nscale8_video( maxBrightnessDebugLed );
   }
   
   FastLED.show(); 

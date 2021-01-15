@@ -31,6 +31,8 @@ namespace BusyBlinkenlichten
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
+
+            this.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
         }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -169,9 +171,9 @@ namespace BusyBlinkenlichten
             SerialSendBytes(new byte[] { 0x06, OnOff, Delay, 0x00 });
         }
 
-        void SetSettings(byte MaxBrightness)
+        void SetSettings(byte MaxBrightness, byte MaxBrightnessDebug)
         {
-            SerialSendBytes(new byte[] { 0xF0, MaxBrightness, 0x00, 0x00 });
+            SerialSendBytes(new byte[] { 0xF0, MaxBrightness, MaxBrightnessDebug, 0x00 });
         }
 
         void SerialSendBytes(byte[] bytes)
@@ -329,12 +331,12 @@ namespace BusyBlinkenlichten
 
         private void tbBrightness_Scroll(object sender, EventArgs e)
         {
-            SetSettings((byte)tbBrightness.Value);
+            SetSettings((byte)tbBrightness.Value, (byte)tbBrightnessDebug.Value);
         }
 
         private void chkRainbow_CheckedChanged(object sender, EventArgs e)
         {
-            SetRainbow(chkRainbow.Checked, 10);
+            SetRainbow(chkRainbow.Checked, 50);
         }
 
         private void cmbPorts_DropDown(object sender, EventArgs e)
@@ -355,6 +357,11 @@ namespace BusyBlinkenlichten
         private void chkForceFree_CheckedChanged(object sender, EventArgs e)
         {
             Blinkenlichten();
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            
         }
     }
 }

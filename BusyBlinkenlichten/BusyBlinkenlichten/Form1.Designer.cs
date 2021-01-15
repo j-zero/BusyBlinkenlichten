@@ -69,9 +69,11 @@
             this.chkForceFree = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblHeartbeat = new System.Windows.Forms.Label();
+            this.tbBrightnessDebug = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBrightnessDebug)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -128,7 +130,7 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(14, 342);
+            this.textBox1.Location = new System.Drawing.Point(11, 435);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -149,12 +151,12 @@
             // 
             // btnOn
             // 
-            this.btnOn.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOn.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOn.Location = new System.Drawing.Point(14, 94);
             this.btnOn.Name = "btnOn";
             this.btnOn.Size = new System.Drawing.Size(110, 27);
             this.btnOn.TabIndex = 6;
-            this.btnOn.Text = "Blinkenlichten!";
+            this.btnOn.Text = "𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
             this.btnOn.UseVisualStyleBackColor = true;
             this.btnOn.Click += new System.EventHandler(this.btnOn_Click);
             // 
@@ -195,7 +197,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(13, 324);
+            this.label4.Location = new System.Drawing.Point(10, 417);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 15);
@@ -426,13 +428,13 @@
             // 
             // tbBrightness
             // 
-            this.tbBrightness.Location = new System.Drawing.Point(186, 43);
+            this.tbBrightness.Location = new System.Drawing.Point(194, 300);
             this.tbBrightness.Maximum = 255;
             this.tbBrightness.Name = "tbBrightness";
             this.tbBrightness.Size = new System.Drawing.Size(297, 45);
             this.tbBrightness.TabIndex = 31;
             this.tbBrightness.TickFrequency = 5;
-            this.tbBrightness.Value = 128;
+            this.tbBrightness.Value = 255;
             this.tbBrightness.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
             // chkRainbow
@@ -503,17 +505,29 @@
             this.lblHeartbeat.TabIndex = 37;
             this.lblHeartbeat.Text = "♥";
             // 
+            // tbBrightnessDebug
+            // 
+            this.tbBrightnessDebug.Location = new System.Drawing.Point(194, 351);
+            this.tbBrightnessDebug.Maximum = 255;
+            this.tbBrightnessDebug.Name = "tbBrightnessDebug";
+            this.tbBrightnessDebug.Size = new System.Drawing.Size(297, 45);
+            this.tbBrightnessDebug.TabIndex = 31;
+            this.tbBrightnessDebug.TickFrequency = 5;
+            this.tbBrightnessDebug.Value = 64;
+            this.tbBrightnessDebug.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 446);
+            this.ClientSize = new System.Drawing.Size(500, 544);
             this.Controls.Add(this.lblHeartbeat);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.chkForceFree);
             this.Controls.Add(this.chkForceMic);
             this.Controls.Add(this.chkForceWebcam);
             this.Controls.Add(this.chkRainbow);
+            this.Controls.Add(this.tbBrightnessDebug);
             this.Controls.Add(this.tbBrightness);
             this.Controls.Add(this.chkBlinkFree);
             this.Controls.Add(this.chkBlinkMic);
@@ -557,6 +571,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbBrightnessDebug)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -603,6 +618,7 @@
         private System.Windows.Forms.CheckBox chkForceFree;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblHeartbeat;
+        private System.Windows.Forms.TrackBar tbBrightnessDebug;
     }
 }
 
