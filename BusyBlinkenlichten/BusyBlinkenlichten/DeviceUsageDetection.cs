@@ -128,78 +128,86 @@ namespace BusyBlinkenlichten
                     dev = "webcam";
                     break;
             }
-
-            RegistryKey basekey = GetRegistryHive(Hive).OpenSubKey(
-                @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\" + dev + @"\");
-
-            // Windows Apps
-            string[] subs = basekey.GetSubKeyNames();
-            foreach (string sub in subs)
+            try
             {
-                if (sub == "NonPackaged")
-                    continue;
+                RegistryKey basekey = GetRegistryHive(Hive).OpenSubKey(
+                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\" + dev + @"\");
 
-                long? lastUsedTimeStart = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStart");
-                long? lastUsedTimeStop = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStop");
-
-                if (lastUsedTimeStop == null)
-                    continue;
-
-                AppInformation ai = new AppInformation();
-                ai.WindowsApp = true;
-                ai.SubKey = sub;
-                ai.Hive = Hive;
-
-                ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
-                ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
-
-                if (Device == DeviceType.Microhpone)
+                // Windows Apps
+                string[] subs = basekey.GetSubKeyNames();
+                foreach (string sub in subs)
                 {
-                    if (ai.InUse)
-                        this.IsMicrophoneInUse = true;
-                    MicrophoneApps.Add(ai);
-                }
-                    
-                else if (Device == DeviceType.Webcam) 
-                {
-                    if (ai.InUse)
-                        this.IsWebcamInUse = true;
-                    WebcamApps.Add(ai);
-                } 
-            }
+                    if (sub == "NonPackaged")
+                        continue;
 
-            // "NonPackaged" Apps
-            string[] subsNonPackaged = basekey.OpenSubKey("NonPackaged").GetSubKeyNames();
-            foreach (string sub in subsNonPackaged)
-            {
-                long? lastUsedTimeStart = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStart");
-                long? lastUsedTimeStop = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStop");
+                    long? lastUsedTimeStart = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStart");
+                    long? lastUsedTimeStop = (long?)basekey.OpenSubKey(sub).GetValue("LastUsedTimeStop");
 
-                if (lastUsedTimeStop == null)
-                    continue;
+                    if (lastUsedTimeStop == null)
+                        continue;
 
-                AppInformation ai = new AppInformation();
-                ai.WindowsApp = false;
-                ai.SubKey = sub;
-                ai.Hive = Hive;
-                ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
-                ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
+                    AppInformation ai = new AppInformation();
+                    ai.WindowsApp = true;
+                    ai.SubKey = sub;
+                    ai.Hive = Hive;
 
-                if (Device == DeviceType.Microhpone)
-                {
-                    if (ai.InUse)
-                        this.IsMicrophoneInUse = true;
-                    MicrophoneApps.Add(ai);
+                    ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
+                    ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
+
+                    if (Device == DeviceType.Microhpone)
+                    {
+                        if (ai.InUse)
+                            this.IsMicrophoneInUse = true;
+                        MicrophoneApps.Add(ai);
+                    }
+
+                    else if (Device == DeviceType.Webcam)
+                    {
+                        if (ai.InUse)
+                            this.IsWebcamInUse = true;
+                        WebcamApps.Add(ai);
+                    }
                 }
 
-                else if (Device == DeviceType.Webcam)
+                // "NonPackaged" Apps
+                string[] subsNonPackaged = basekey.OpenSubKey("NonPackaged").GetSubKeyNames();
+                foreach (string sub in subsNonPackaged)
                 {
-                    if (ai.InUse)
-                        this.IsWebcamInUse = true;
-                    WebcamApps.Add(ai);
+                    long? lastUsedTimeStart = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStart");
+                    long? lastUsedTimeStop = (long?)basekey.OpenSubKey("NonPackaged").OpenSubKey(sub).GetValue("LastUsedTimeStop");
+
+                    if (lastUsedTimeStop == null)
+                        continue;
+
+                    AppInformation ai = new AppInformation();
+                    ai.WindowsApp = false;
+                    ai.SubKey = sub;
+                    ai.Hive = Hive;
+                    ai.LastUsedTimeStart = lastUsedTimeStart != null ? (long)lastUsedTimeStart : 0;
+                    ai.LastUsedTimeStop = lastUsedTimeStop != null ? (long)lastUsedTimeStop : 0;
+
+                    if (Device == DeviceType.Microhpone)
+                    {
+                        if (ai.InUse)
+                            this.IsMicrophoneInUse = true;
+                        MicrophoneApps.Add(ai);
+                    }
+
+                    else if (Device == DeviceType.Webcam)
+                    {
+                        if (ai.InUse)
+                            this.IsWebcamInUse = true;
+                        WebcamApps.Add(ai);
+                    }
                 }
-            }
             ;
+            }
+            catch(Exception ex)
+            {
+                System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.Message);
+                System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.StackTrace);
+            }
+        
         }
     }
 }

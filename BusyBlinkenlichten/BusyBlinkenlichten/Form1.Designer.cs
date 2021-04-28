@@ -70,6 +70,11 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblHeartbeat = new System.Windows.Forms.Label();
             this.tbBrightnessDebug = new System.Windows.Forms.TrackBar();
+            this.chkKuando = new System.Windows.Forms.CheckBox();
+            this.chkFadeFree = new System.Windows.Forms.CheckBox();
+            this.chkFadeMic = new System.Windows.Forms.CheckBox();
+            this.chkFadeWebcam = new System.Windows.Forms.CheckBox();
+            this.kuandoForceTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -79,7 +84,7 @@
             // notifyIcon1
             // 
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "BusyBlinkenlichten";
+            this.notifyIcon1.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
             // 
@@ -397,7 +402,7 @@
             this.chkBlinkWebcam.Name = "chkBlinkWebcam";
             this.chkBlinkWebcam.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkWebcam.TabIndex = 28;
-            this.chkBlinkWebcam.Text = "Fade";
+            this.chkBlinkWebcam.Text = "Blink";
             this.chkBlinkWebcam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkBlinkWebcam.UseVisualStyleBackColor = true;
             this.chkBlinkWebcam.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
@@ -409,7 +414,7 @@
             this.chkBlinkMic.Name = "chkBlinkMic";
             this.chkBlinkMic.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkMic.TabIndex = 29;
-            this.chkBlinkMic.Text = "Fade";
+            this.chkBlinkMic.Text = "Blink";
             this.chkBlinkMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkBlinkMic.UseVisualStyleBackColor = true;
             this.chkBlinkMic.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
@@ -421,7 +426,7 @@
             this.chkBlinkFree.Name = "chkBlinkFree";
             this.chkBlinkFree.Size = new System.Drawing.Size(50, 27);
             this.chkBlinkFree.TabIndex = 30;
-            this.chkBlinkFree.Text = "Fade";
+            this.chkBlinkFree.Text = "Blink";
             this.chkBlinkFree.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkBlinkFree.UseVisualStyleBackColor = true;
             this.chkBlinkFree.CheckedChanged += new System.EventHandler(this.chkBlinkWebcam_CheckedChanged_1);
@@ -516,11 +521,62 @@
             this.tbBrightnessDebug.Value = 64;
             this.tbBrightnessDebug.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
+            // chkKuando
+            // 
+            this.chkKuando.AutoSize = true;
+            this.chkKuando.Location = new System.Drawing.Point(194, 47);
+            this.chkKuando.Name = "chkKuando";
+            this.chkKuando.Size = new System.Drawing.Size(122, 19);
+            this.chkKuando.TabIndex = 38;
+            this.chkKuando.Text = "Kuando Busylight";
+            this.chkKuando.UseVisualStyleBackColor = true;
+            this.chkKuando.CheckedChanged += new System.EventHandler(this.chkKuando_CheckedChanged);
+            // 
+            // chkFadeFree
+            // 
+            this.chkFadeFree.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkFadeFree.Location = new System.Drawing.Point(242, 206);
+            this.chkFadeFree.Name = "chkFadeFree";
+            this.chkFadeFree.Size = new System.Drawing.Size(50, 27);
+            this.chkFadeFree.TabIndex = 41;
+            this.chkFadeFree.Text = "Pulse";
+            this.chkFadeFree.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkFadeFree.UseVisualStyleBackColor = true;
+            this.chkFadeFree.CheckedChanged += new System.EventHandler(this.chkFadeFree_CheckedChanged);
+            // 
+            // chkFadeMic
+            // 
+            this.chkFadeMic.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkFadeMic.Location = new System.Drawing.Point(242, 173);
+            this.chkFadeMic.Name = "chkFadeMic";
+            this.chkFadeMic.Size = new System.Drawing.Size(50, 27);
+            this.chkFadeMic.TabIndex = 40;
+            this.chkFadeMic.Text = "Pulse";
+            this.chkFadeMic.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkFadeMic.UseVisualStyleBackColor = true;
+            this.chkFadeMic.CheckedChanged += new System.EventHandler(this.chkFadeFree_CheckedChanged);
+            // 
+            // chkFadeWebcam
+            // 
+            this.chkFadeWebcam.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkFadeWebcam.Location = new System.Drawing.Point(242, 140);
+            this.chkFadeWebcam.Name = "chkFadeWebcam";
+            this.chkFadeWebcam.Size = new System.Drawing.Size(50, 27);
+            this.chkFadeWebcam.TabIndex = 39;
+            this.chkFadeWebcam.Text = "Pulse";
+            this.chkFadeWebcam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkFadeWebcam.UseVisualStyleBackColor = true;
+            this.chkFadeWebcam.CheckedChanged += new System.EventHandler(this.chkFadeFree_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 544);
+            this.Controls.Add(this.chkFadeFree);
+            this.Controls.Add(this.chkFadeMic);
+            this.Controls.Add(this.chkFadeWebcam);
+            this.Controls.Add(this.chkKuando);
             this.Controls.Add(this.lblHeartbeat);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.chkForceFree);
@@ -565,7 +621,9 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "Form1";
+            this.ShowInTaskbar = false;
             this.Text = "Busy Blinkenlichten";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
@@ -619,6 +677,11 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblHeartbeat;
         private System.Windows.Forms.TrackBar tbBrightnessDebug;
+        private System.Windows.Forms.CheckBox chkKuando;
+        private System.Windows.Forms.CheckBox chkFadeFree;
+        private System.Windows.Forms.CheckBox chkFadeMic;
+        private System.Windows.Forms.CheckBox chkFadeWebcam;
+        private System.Windows.Forms.Timer kuandoForceTimer;
     }
 }
 

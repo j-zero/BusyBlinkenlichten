@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Busylight;
 
 namespace BusyBlinkenlichten
 {
@@ -18,22 +19,34 @@ namespace BusyBlinkenlichten
 
         private delegate void SetTextDeleg(string text);
 
+        Busylight.KuandoSDK kuando = new KuandoSDK("BusyBlinkenlichten");
+        
+
         DeviceUsageDetection deviceUsageDetection;
         SerialPort serialPort;
         bool allowExit = false;
         bool heartbeat = false;
+        bool AllowDisplay = true;
+
+        protected override void SetVisibleCore(bool value)
+        {
+            base.SetVisibleCore(AllowDisplay ? value : AllowDisplay);
+        }
+
         public Form1()
         {
             InitializeComponent();
             deviceUsageDetection = new DeviceUsageDetection();
             deviceUsageDetection.DeviceUsageDetected += DeviceUsageDetection_DeviceUsageDetected;
-            RefreshPorts();
+             
+           
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
 
             this.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
         }
+
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
@@ -42,8 +55,10 @@ namespace BusyBlinkenlichten
                 case SessionSwitchReason.SessionLock:
                 case SessionSwitchReason.SessionLogoff:
                     SetColorRGB(0, 0, 0);
+                    kuando.Off();
                     break;
                 case SessionSwitchReason.SessionUnlock:
+                    Connect();
                     Blinkenlichten();
                     break;
 
@@ -56,8 +71,10 @@ namespace BusyBlinkenlichten
             {
                 case PowerModes.Suspend:
                     SetColorRGB(0, 0, 0);
+                    kuando.Off();
                     break;
                 case PowerModes.Resume:
+                    Connect();
                     Blinkenlichten();
                     break;
             }
@@ -68,7 +85,7 @@ namespace BusyBlinkenlichten
             cmbPorts.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             cmbPorts.Items.AddRange(ports);
-            if(ports.Length > 0)
+            if (ports.Length > 0)
                 cmbPorts.SelectedIndex = 0;
 
         }
@@ -96,6 +113,35 @@ namespace BusyBlinkenlichten
             textBox1.AppendText(data.Trim() + Environment.NewLine);
         }
 
+        private bool Connect()
+        {
+            try
+            {
+                if (serialPort == null)
+                {
+                    serialPort = new SerialPort(cmbPorts.Text, 115200);
+                }
+                else
+                {
+                    if (serialPort.IsOpen)
+                        return serialPort.IsOpen;
+                }
+                serialPort.Open();
+                serialPort.DtrEnable = true;
+                serialPort.RtsEnable = true;
+                serialPort.DataReceived += SerialPort_DataReceived;
+                Blinkenlichten();
+                btnDisconnect.Enabled = true;
+                btnConnect.Enabled = false;
+                return serialPort.IsOpen;
+            }
+            catch(Exception ex)
+            {
+                WriteLog(ex.Message);
+            }
+            return false;
+        }
+
         private void Blinkenlichten()
         {
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
@@ -105,23 +151,98 @@ namespace BusyBlinkenlichten
                 if (deviceUsageDetection.IsWebcamInUse || chkForceWebcam.Checked)
                 {
                     SetColor(lblWebcamColor.BackColor);
-                    SetFade(chkBlinkWebcam.Checked, 5);
+
+                    if (chkBlinkWebcam.Checked) {
+                        SetBlink(chkBlinkWebcam.Checked, tbBlinkSpeed.Value);
+                        if (chkKuando.Checked)
+                            kuando.Blink(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G, 5, 5);
+                    }
+                    else if (chkFadeWebcam.Checked){
+                        SetFade(chkFadeWebcam.Checked, 3);
+                        if (chkKuando.Checked)
+                            kuando.Pulse(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G);
+                    }
+                    else {
+                        SetBlink(false, 5);
+                        SetFade(false, 5);
+                        if (chkKuando.Checked)
+                            kuando.Light(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G);
+                    }
+                    
+                    
                 }
                 else if (deviceUsageDetection.IsMicrophoneInUse || chkForceMic.Checked)
                 {
                     SetColor(lblMicColor.BackColor);
-                    SetFade(chkBlinkMic.Checked, 5);
+
+                    if (chkBlinkMic.Checked) {
+                        SetBlink(chkBlinkMic.Checked, tbBlinkSpeed.Value);
+                        if (chkKuando.Checked) 
+                            kuando.Blink(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G, 5, 5);
+                    }
+                    else if (chkFadeMic.Checked){
+                        SetFade(chkFadeMic.Checked, 3);
+                        if (chkKuando.Checked) 
+                            kuando.Pulse(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G);
+                    }
+                    else {
+                        SetBlink(false, 5);
+                        SetFade(false, 5);
+                        if (chkKuando.Checked) 
+                            kuando.Light(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G);
+                    }
+                    
+                    
                 }
                 else
                 {
                     SetColor(lblFreeColor.BackColor);
-                    SetFade(chkBlinkFree.Checked, 5);
+                    if (chkBlinkFree.Checked)
+                    {
+                        SetBlink(chkBlinkFree.Checked, tbBlinkSpeed.Value);
+                        if (chkKuando.Checked)
+                            kuando.Blink(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G, 5, 5);
+                    }
+                    else if (chkFadeFree.Checked)
+                    {
+                        SetFade(chkFadeFree.Checked, 3);
+                        if (chkKuando.Checked)
+                            kuando.Pulse(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
+                    }
+                    else
+                    {
+                        SetBlink(false, 5);
+                        SetFade(false, 5);
+                        if (chkKuando.Checked)
+                            kuando.Light(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
+                    }
+
                 }
             }
             else
             {
                 SetColor(lblFreeColor.BackColor);
-                SetFade(chkBlinkFree.Checked, 5);
+                if (chkBlinkFree.Checked)
+                {
+                    SetBlink(chkBlinkFree.Checked, tbBlinkSpeed.Value);
+                    if (chkKuando.Checked)
+                        kuando.Blink(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G, 5, 5);
+                }
+                else if (chkFadeFree.Checked)
+                {
+                    SetFade(chkFadeFree.Checked, 3);
+                    if (chkKuando.Checked)
+                        kuando.Pulse(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
+                }
+                else
+                {
+                    SetBlink(false, 5);
+                    SetFade(false, 5);
+                    if (chkKuando.Checked)
+                        kuando.Light(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
+                }
+
+
             }
 
 
@@ -211,6 +332,8 @@ namespace BusyBlinkenlichten
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            RefreshPorts();
+            Connect();
             Blinkenlichten();
         }
 
@@ -230,6 +353,8 @@ namespace BusyBlinkenlichten
         private void btnOff_Click(object sender, EventArgs e)
         {
             SetColor(Color.Black);
+            if (chkKuando.Checked)
+                kuando.Off();
         }
 
         private void btnOn_Click(object sender, EventArgs e)
@@ -239,21 +364,7 @@ namespace BusyBlinkenlichten
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            try
-            {
-                serialPort = new SerialPort(cmbPorts.Text, 115200);
-                serialPort.Open();
-                serialPort.DtrEnable = true;
-                serialPort.RtsEnable = true;
-                serialPort.DataReceived += SerialPort_DataReceived;
-                Blinkenlichten();
-                btnDisconnect.Enabled = true;
-                btnConnect.Enabled = false;
-
-            }
-            catch
-            {
-            }
+            Connect();
         }
 
         private void btnSetCustom_Click(object sender, EventArgs e)
@@ -306,6 +417,7 @@ namespace BusyBlinkenlichten
             SetColorRGB(0, 0, 0);
             if (serialPort != null && serialPort.IsOpen)
                 serialPort.Close();
+            kuando.Off();
             Application.Exit();
         }
 
@@ -362,6 +474,19 @@ namespace BusyBlinkenlichten
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
             
+        }
+
+        private void chkFadeFree_CheckedChanged(object sender, EventArgs e)
+        {
+            Blinkenlichten();
+        }
+
+        private void chkKuando_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkKuando.Checked)
+                kuando.Off();
+            else
+                Blinkenlichten();
         }
     }
 }
