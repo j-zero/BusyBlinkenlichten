@@ -31,6 +31,13 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.forceWebcamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceMicrophoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceFreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.setCustomColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.blinkenlichtenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblWebcamUsage = new System.Windows.Forms.Label();
@@ -75,6 +82,9 @@
             this.chkFadeMic = new System.Windows.Forms.CheckBox();
             this.chkFadeWebcam = new System.Windows.Forms.CheckBox();
             this.kuandoForceTimer = new System.Windows.Forms.Timer(this.components);
+            this.btnMediaPlayStop = new System.Windows.Forms.Button();
+            this.chkStopMedia = new System.Windows.Forms.CheckBox();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -83,10 +93,64 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.forceWebcamToolStripMenuItem,
+            this.forceMicrophoneToolStripMenuItem,
+            this.forceFreeToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.setCustomColorToolStripMenuItem,
+            this.blinkenlichtenToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 120);
+            // 
+            // forceWebcamToolStripMenuItem
+            // 
+            this.forceWebcamToolStripMenuItem.Name = "forceWebcamToolStripMenuItem";
+            this.forceWebcamToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.forceWebcamToolStripMenuItem.Text = "Force Webcam";
+            this.forceWebcamToolStripMenuItem.Click += new System.EventHandler(this.forceWebcamToolStripMenuItem_Click);
+            // 
+            // forceMicrophoneToolStripMenuItem
+            // 
+            this.forceMicrophoneToolStripMenuItem.Name = "forceMicrophoneToolStripMenuItem";
+            this.forceMicrophoneToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.forceMicrophoneToolStripMenuItem.Text = "Force Microphone";
+            this.forceMicrophoneToolStripMenuItem.Click += new System.EventHandler(this.forceMicrophoneToolStripMenuItem_Click);
+            // 
+            // forceFreeToolStripMenuItem
+            // 
+            this.forceFreeToolStripMenuItem.Name = "forceFreeToolStripMenuItem";
+            this.forceFreeToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.forceFreeToolStripMenuItem.Text = "Force Free";
+            this.forceFreeToolStripMenuItem.Click += new System.EventHandler(this.forceFreeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(168, 6);
+            // 
+            // setCustomColorToolStripMenuItem
+            // 
+            this.setCustomColorToolStripMenuItem.Name = "setCustomColorToolStripMenuItem";
+            this.setCustomColorToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.setCustomColorToolStripMenuItem.Text = "Set Custom Color";
+            this.setCustomColorToolStripMenuItem.Click += new System.EventHandler(this.setCustomColorToolStripMenuItem_Click);
+            // 
+            // blinkenlichtenToolStripMenuItem
+            // 
+            this.blinkenlichtenToolStripMenuItem.Name = "blinkenlichtenToolStripMenuItem";
+            this.blinkenlichtenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.blinkenlichtenToolStripMenuItem.Text = "Blinkenlichten!";
+            this.blinkenlichtenToolStripMenuItem.Click += new System.EventHandler(this.blinkenlichtenToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -568,11 +632,37 @@
             this.chkFadeWebcam.UseVisualStyleBackColor = true;
             this.chkFadeWebcam.CheckedChanged += new System.EventHandler(this.chkFadeFree_CheckedChanged);
             // 
+            // btnMediaPlayStop
+            // 
+            this.btnMediaPlayStop.Location = new System.Drawing.Point(14, 337);
+            this.btnMediaPlayStop.Name = "btnMediaPlayStop";
+            this.btnMediaPlayStop.Size = new System.Drawing.Size(91, 33);
+            this.btnMediaPlayStop.TabIndex = 42;
+            this.btnMediaPlayStop.Text = "play/stop";
+            this.btnMediaPlayStop.UseVisualStyleBackColor = true;
+            this.btnMediaPlayStop.Visible = false;
+            this.btnMediaPlayStop.Click += new System.EventHandler(this.btnMediaPlayStop_Click);
+            // 
+            // chkStopMedia
+            // 
+            this.chkStopMedia.AutoSize = true;
+            this.chkStopMedia.Checked = true;
+            this.chkStopMedia.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkStopMedia.Location = new System.Drawing.Point(322, 47);
+            this.chkStopMedia.Name = "chkStopMedia";
+            this.chkStopMedia.Size = new System.Drawing.Size(88, 19);
+            this.chkStopMedia.TabIndex = 43;
+            this.chkStopMedia.Text = "Stop Media";
+            this.chkStopMedia.UseVisualStyleBackColor = true;
+            this.chkStopMedia.CheckedChanged += new System.EventHandler(this.chkStopMedia_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 544);
+            this.Controls.Add(this.chkStopMedia);
+            this.Controls.Add(this.btnMediaPlayStop);
             this.Controls.Add(this.chkFadeFree);
             this.Controls.Add(this.chkFadeMic);
             this.Controls.Add(this.chkFadeWebcam);
@@ -626,6 +716,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -682,6 +773,15 @@
         private System.Windows.Forms.CheckBox chkFadeMic;
         private System.Windows.Forms.CheckBox chkFadeWebcam;
         private System.Windows.Forms.Timer kuandoForceTimer;
+        private System.Windows.Forms.Button btnMediaPlayStop;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem forceWebcamToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forceMicrophoneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forceFreeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setCustomColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem blinkenlichtenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.CheckBox chkStopMedia;
     }
 }
 

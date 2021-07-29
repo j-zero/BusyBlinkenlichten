@@ -10,12 +10,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Busylight;
+using System.Runtime.InteropServices;
 
 namespace BusyBlinkenlichten
 {
     public partial class Form1 : Form
     {
+        public const int KEYEVENTF_EXTENTEDKEY = 1;
+        public const int KEYEVENTF_KEYUP = 0;
+        public const int VK_MEDIA_NEXT_TRACK    = 0xB0;
+        public const int VK_MEDIA_PREV_TRACK    = 0xB1;
+        public const int VK_MEDIA_STOP          = 0xB2;
+        public const int VK_MEDIA_PLAY_PAUSE    = 0xB3;
 
+        [DllImport("user32.dll")]
+        public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
 
         private delegate void SetTextDeleg(string text);
 
@@ -327,6 +336,14 @@ namespace BusyBlinkenlichten
 
         private void DeviceUsageDetection_DeviceUsageDetected()
         {
+            if(deviceUsageDetection.IsMicrophoneInUse && chkStopMedia.Checked)
+            {
+                keybd_event(VK_MEDIA_STOP, 0, KEYEVENTF_EXTENTEDKEY, IntPtr.Zero);    // Play/Pause
+            }
+            else
+            {
+
+            }
             Blinkenlichten();
         }
 
@@ -346,8 +363,7 @@ namespace BusyBlinkenlichten
         private void notifyIcon1_Click(object sender, EventArgs e)
         {
             
-            this.WindowState = FormWindowState.Normal;
-            this.Show();
+
         }
 
         private void btnOff_Click(object sender, EventArgs e)
@@ -369,7 +385,6 @@ namespace BusyBlinkenlichten
 
         private void btnSetCustom_Click(object sender, EventArgs e)
         {
-            
             SetColor(lblColor.BackColor);
         }
 
@@ -487,6 +502,76 @@ namespace BusyBlinkenlichten
                 kuando.Off();
             else
                 Blinkenlichten();
+        }
+
+        private void btnMediaPlayStop_Click(object sender, EventArgs e)
+        {
+            keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENTEDKEY, IntPtr.Zero);    // Play/Pause
+        }
+
+        private void forceWebcamToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chkForceFree.Checked = false;
+            chkForceMic.Checked = false;
+            chkForceWebcam.Checked = !forceWebcamToolStripMenuItem.Checked;
+            forceFreeToolStripMenuItem.Checked = false;
+            forceMicrophoneToolStripMenuItem.Checked = false;
+            forceWebcamToolStripMenuItem.Checked = !forceWebcamToolStripMenuItem.Checked;
+
+
+
+            Blinkenlichten();
+        }
+
+        private void forceMicrophoneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+                chkForceFree.Checked = false;
+                chkForceMic.Checked = !forceMicrophoneToolStripMenuItem.Checked;
+                chkForceWebcam.Checked = false;
+                forceFreeToolStripMenuItem.Checked = false;
+                forceMicrophoneToolStripMenuItem.Checked = !forceMicrophoneToolStripMenuItem.Checked; ;
+                forceWebcamToolStripMenuItem.Checked = false;
+                Blinkenlichten();
+            
+        }
+
+        private void forceFreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+                chkForceFree.Checked = !forceFreeToolStripMenuItem.Checked;
+                chkForceMic.Checked = false;
+                chkForceWebcam.Checked = false;
+                forceFreeToolStripMenuItem.Checked = !forceFreeToolStripMenuItem.Checked;
+                forceMicrophoneToolStripMenuItem.Checked = false;
+                forceWebcamToolStripMenuItem.Checked = false;
+                Blinkenlichten();
+            
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.Show();
+            }
+
+        }
+
+        private void blinkenlichtenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Blinkenlichten();
+        }
+
+        private void setCustomColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetColor(lblColor.BackColor);
+        }
+
+        private void chkStopMedia_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
