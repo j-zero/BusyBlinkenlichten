@@ -36,6 +36,7 @@ namespace BusyBlinkenlichten
         bool allowExit = false;
         bool heartbeat = false;
         bool AllowDisplay = true;
+        bool isLocked = false;
 
         protected override void SetVisibleCore(bool value)
         {
@@ -65,11 +66,16 @@ namespace BusyBlinkenlichten
                 case SessionSwitchReason.SessionLogoff:
                     SetColorRGB(0, 0, 0);
                     kuando.Off();
+                    this.isLocked = true;
                     break;
+                case SessionSwitchReason.SessionLogon:
                 case SessionSwitchReason.SessionUnlock:
+                    this.isLocked = false;
                     Connect();
                     Blinkenlichten();
+
                     break;
+                    
 
             }
         }
@@ -81,10 +87,13 @@ namespace BusyBlinkenlichten
                 case PowerModes.Suspend:
                     SetColorRGB(0, 0, 0);
                     kuando.Off();
+                    this.isLocked = true;
                     break;
                 case PowerModes.Resume:
+                    this.isLocked = false;
                     Connect();
                     Blinkenlichten();
+                    
                     break;
             }
         }
@@ -153,6 +162,13 @@ namespace BusyBlinkenlichten
 
         private void Blinkenlichten()
         {
+            if (this.isLocked)
+            {
+                SetColorRGB(0, 0, 0);
+                kuando.Off();
+                return;
+            }
+
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
             lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString();
             if (!chkForceFree.Checked)
