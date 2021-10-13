@@ -53,6 +53,9 @@ namespace BusyBlinkenlichten
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
+            
+
+
 
             this.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
         }
@@ -128,7 +131,14 @@ namespace BusyBlinkenlichten
         }
 
         private void WriteLog(string data) {
-            textBox1.AppendText(data.Trim() + Environment.NewLine);
+            try
+            {
+                textBox1.AppendText(data.Trim() + Environment.NewLine);
+            }
+            catch
+            {
+
+            }
         }
 
         private bool Connect()
@@ -169,6 +179,11 @@ namespace BusyBlinkenlichten
                 return;
             }
 
+            bool enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !serialPort.IsOpen);
+
+            if(!enableKuando)
+                kuando.Off();
+
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
             lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString();
             if (!chkForceFree.Checked)
@@ -179,18 +194,18 @@ namespace BusyBlinkenlichten
 
                     if (chkBlinkWebcam.Checked) {
                         SetBlink(chkBlinkWebcam.Checked, tbBlinkSpeed.Value);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Blink(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G, 5, 5);
                     }
                     else if (chkFadeWebcam.Checked){
                         SetFade(chkFadeWebcam.Checked, 3);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Pulse(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G);
                     }
                     else {
                         SetBlink(false, 5);
                         SetFade(false, 5);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Light(lblWebcamColor.BackColor.R, lblWebcamColor.BackColor.B, lblWebcamColor.BackColor.G);
                     }
                     
@@ -202,18 +217,18 @@ namespace BusyBlinkenlichten
 
                     if (chkBlinkMic.Checked) {
                         SetBlink(chkBlinkMic.Checked, tbBlinkSpeed.Value);
-                        if (chkKuando.Checked) 
+                        if (enableKuando) 
                             kuando.Blink(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G, 5, 5);
                     }
                     else if (chkFadeMic.Checked){
                         SetFade(chkFadeMic.Checked, 3);
-                        if (chkKuando.Checked) 
+                        if (enableKuando) 
                             kuando.Pulse(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G);
                     }
                     else {
                         SetBlink(false, 5);
                         SetFade(false, 5);
-                        if (chkKuando.Checked) 
+                        if (enableKuando) 
                             kuando.Light(lblMicColor.BackColor.R, lblMicColor.BackColor.B, lblMicColor.BackColor.G);
                     }
                     
@@ -225,20 +240,20 @@ namespace BusyBlinkenlichten
                     if (chkBlinkFree.Checked)
                     {
                         SetBlink(chkBlinkFree.Checked, tbBlinkSpeed.Value);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Blink(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G, 5, 5);
                     }
                     else if (chkFadeFree.Checked)
                     {
                         SetFade(chkFadeFree.Checked, 3);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Pulse(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
                     }
                     else
                     {
                         SetBlink(false, 5);
                         SetFade(false, 5);
-                        if (chkKuando.Checked)
+                        if (enableKuando)
                             kuando.Light(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
                     }
 
@@ -250,20 +265,20 @@ namespace BusyBlinkenlichten
                 if (chkBlinkFree.Checked)
                 {
                     SetBlink(chkBlinkFree.Checked, tbBlinkSpeed.Value);
-                    if (chkKuando.Checked)
+                    if (enableKuando)
                         kuando.Blink(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G, 5, 5);
                 }
                 else if (chkFadeFree.Checked)
                 {
                     SetFade(chkFadeFree.Checked, 3);
-                    if (chkKuando.Checked)
+                    if (enableKuando)
                         kuando.Pulse(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
                 }
                 else
                 {
                     SetBlink(false, 5);
                     SetFade(false, 5);
-                    if (chkKuando.Checked)
+                    if (enableKuando)
                         kuando.Light(lblFreeColor.BackColor.R, lblFreeColor.BackColor.B, lblFreeColor.BackColor.G);
                 }
 
@@ -435,6 +450,7 @@ namespace BusyBlinkenlichten
             {
 
             }
+            Blinkenlichten();
         }
 
         private void lblsetBlinkColor_Click(object sender, EventArgs e)
@@ -586,6 +602,11 @@ namespace BusyBlinkenlichten
         }
 
         private void chkStopMedia_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kuandoForceTimer_Tick(object sender, EventArgs e)
         {
 
         }

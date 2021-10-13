@@ -84,6 +84,7 @@
             this.kuandoForceTimer = new System.Windows.Forms.Timer(this.components);
             this.btnMediaPlayStop = new System.Windows.Forms.Button();
             this.chkStopMedia = new System.Windows.Forms.CheckBox();
+            this.chkKuandoFallback = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
@@ -102,6 +103,7 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.forceWebcamToolStripMenuItem,
             this.forceMicrophoneToolStripMenuItem,
@@ -590,9 +592,9 @@
             this.chkKuando.AutoSize = true;
             this.chkKuando.Location = new System.Drawing.Point(194, 47);
             this.chkKuando.Name = "chkKuando";
-            this.chkKuando.Size = new System.Drawing.Size(122, 19);
+            this.chkKuando.Size = new System.Drawing.Size(115, 19);
             this.chkKuando.TabIndex = 38;
-            this.chkKuando.Text = "Kuando Busylight";
+            this.chkKuando.Text = "Kuando Enabled";
             this.chkKuando.UseVisualStyleBackColor = true;
             this.chkKuando.CheckedChanged += new System.EventHandler(this.chkKuando_CheckedChanged);
             // 
@@ -632,6 +634,10 @@
             this.chkFadeWebcam.UseVisualStyleBackColor = true;
             this.chkFadeWebcam.CheckedChanged += new System.EventHandler(this.chkFadeFree_CheckedChanged);
             // 
+            // kuandoForceTimer
+            // 
+            this.kuandoForceTimer.Tick += new System.EventHandler(this.kuandoForceTimer_Tick);
+            // 
             // btnMediaPlayStop
             // 
             this.btnMediaPlayStop.Location = new System.Drawing.Point(14, 337);
@@ -656,11 +662,24 @@
             this.chkStopMedia.UseVisualStyleBackColor = true;
             this.chkStopMedia.CheckedChanged += new System.EventHandler(this.chkStopMedia_CheckedChanged);
             // 
+            // chkKuandoFallback
+            // 
+            this.chkKuandoFallback.AutoSize = true;
+            this.chkKuandoFallback.Checked = true;
+            this.chkKuandoFallback.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkKuandoFallback.Location = new System.Drawing.Point(194, 69);
+            this.chkKuandoFallback.Name = "chkKuandoFallback";
+            this.chkKuandoFallback.Size = new System.Drawing.Size(118, 19);
+            this.chkKuandoFallback.TabIndex = 44;
+            this.chkKuandoFallback.Text = "Kuando Fallback";
+            this.chkKuandoFallback.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 544);
+            this.Controls.Add(this.chkKuandoFallback);
             this.Controls.Add(this.chkStopMedia);
             this.Controls.Add(this.btnMediaPlayStop);
             this.Controls.Add(this.chkFadeFree);
@@ -782,6 +801,7 @@
         private System.Windows.Forms.ToolStripMenuItem blinkenlichtenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.CheckBox chkStopMedia;
+        private System.Windows.Forms.CheckBox chkKuandoFallback;
     }
 }
 
