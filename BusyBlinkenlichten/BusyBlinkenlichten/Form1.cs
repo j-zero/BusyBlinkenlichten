@@ -178,8 +178,9 @@ namespace BusyBlinkenlichten
                 kuando.Off();
                 return;
             }
+            bool enableKuando = false;
 
-            bool enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !serialPort.IsOpen);
+            enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !(serialPort != null && serialPort.IsOpen));
 
             if(!enableKuando)
                 kuando.Off();
