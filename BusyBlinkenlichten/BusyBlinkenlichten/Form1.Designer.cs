@@ -87,6 +87,8 @@
             this.btnMediaPlayStop = new System.Windows.Forms.Button();
             this.chkStopMedia = new System.Windows.Forms.CheckBox();
             this.chkKuandoFallback = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbBlinkSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbBrightness)).BeginInit();
@@ -516,12 +518,12 @@
             // 
             // tbBrightness
             // 
-            this.tbBrightness.Location = new System.Drawing.Point(194, 300);
+            this.tbBrightness.Location = new System.Drawing.Point(130, 321);
             this.tbBrightness.Maximum = 255;
             this.tbBrightness.Name = "tbBrightness";
-            this.tbBrightness.Size = new System.Drawing.Size(297, 45);
+            this.tbBrightness.Size = new System.Drawing.Size(162, 45);
             this.tbBrightness.TabIndex = 31;
-            this.tbBrightness.TickFrequency = 5;
+            this.tbBrightness.TickFrequency = 32;
             this.tbBrightness.Value = 255;
             this.tbBrightness.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
@@ -595,12 +597,12 @@
             // 
             // tbBrightnessDebug
             // 
-            this.tbBrightnessDebug.Location = new System.Drawing.Point(194, 351);
+            this.tbBrightnessDebug.Location = new System.Drawing.Point(131, 359);
             this.tbBrightnessDebug.Maximum = 255;
             this.tbBrightnessDebug.Name = "tbBrightnessDebug";
-            this.tbBrightnessDebug.Size = new System.Drawing.Size(297, 45);
+            this.tbBrightnessDebug.Size = new System.Drawing.Size(161, 45);
             this.tbBrightnessDebug.TabIndex = 31;
-            this.tbBrightnessDebug.TickFrequency = 5;
+            this.tbBrightnessDebug.TickFrequency = 32;
             this.tbBrightnessDebug.Value = 64;
             this.tbBrightnessDebug.Scroll += new System.EventHandler(this.tbBrightness_Scroll);
             // 
@@ -657,9 +659,9 @@
             // 
             // btnMediaPlayStop
             // 
-            this.btnMediaPlayStop.Location = new System.Drawing.Point(14, 337);
+            this.btnMediaPlayStop.Location = new System.Drawing.Point(403, 175);
             this.btnMediaPlayStop.Name = "btnMediaPlayStop";
-            this.btnMediaPlayStop.Size = new System.Drawing.Size(91, 33);
+            this.btnMediaPlayStop.Size = new System.Drawing.Size(80, 27);
             this.btnMediaPlayStop.TabIndex = 42;
             this.btnMediaPlayStop.Text = "play/stop";
             this.btnMediaPlayStop.UseVisualStyleBackColor = true;
@@ -692,11 +694,31 @@
             this.chkKuandoFallback.UseVisualStyleBackColor = true;
             this.chkKuandoFallback.CheckedChanged += new System.EventHandler(this.chkKuandoFallback_CheckedChanged);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 321);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(97, 15);
+            this.label8.TabIndex = 45;
+            this.label8.Text = "Brightness LED1:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(17, 359);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(97, 15);
+            this.label10.TabIndex = 46;
+            this.label10.Text = "Brightness LED2:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 544);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.chkKuandoFallback);
             this.Controls.Add(this.chkStopMedia);
             this.Controls.Add(this.btnMediaPlayStop);
@@ -822,6 +844,8 @@
         private System.Windows.Forms.CheckBox chkKuandoFallback;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label10;
     }
 }
 

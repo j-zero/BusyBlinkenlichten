@@ -9,11 +9,15 @@ CRGB debugLeds[LED_COUNT];
 CRGB solidColor = CHSV(0,0,0);
 CRGB blinkColor = CHSV(0,0,0);
 
+uint8_t enabled = 1;
 
 uint8_t maxBrightness = 255;
 uint8_t maxBrightnessDebugLed = 64;
 
 uint16_t heartbeat = 1000;
+uint16_t heartbeatCounter = 0;
+
+uint16_t heartbeatTimeout = 120; // turn off LEDs after x (300) seconds, if no heartbeat answer is received
 
 uint8_t blinkEnabled = 0;
 uint8_t blinkState = 0;
@@ -29,6 +33,8 @@ uint16_t fadeDirection = 1;
 unsigned long previousMillisHeartBeat = 0;
 unsigned long previousMillisBlink = 0;
 unsigned long previousMillisFade = 0;
+
+
 
 void setup() {
   
@@ -54,6 +60,31 @@ void setup() {
   
 }
 
+void TurnOff(){
+  enabled = 0;
+  blinkEnabled = 0;
+  fadeEnabled = 0;
+  rainbowEnabled = 0;
+  
+  solidColor = CRGB(0, 0, 0);
+
+  for(int i = 0; i < 255; i++) {
+    for(int l = 0; l < LED_COUNT; l++){
+      mainLeds[l] = CHSV(i, 255, 255);
+      debugLeds[l] = CHSV(255-i, 255, 255);
+    }
+    FastLED.show(); 
+    delay(10);
+  }
+
+  for(int l = 0; l < LED_COUNT; l++){
+    mainLeds[l] = CRGB(0, 0, 0);
+    debugLeds[l] = CRGB(0, 0, 0);
+  }
+
+  FastLED.show(); 
+}
+
 void loop() {
     static uint8_t c = 0;
     static uint8_t b1 = 0;
@@ -65,8 +96,12 @@ void loop() {
     // Heartbeat
     if (currentMillis - previousMillisHeartBeat >= heartbeat) {
       previousMillisHeartBeat = currentMillis;
-      heartbeat_receive = 0;
+      heartbeatCounter++;
       Serial.println("heartbeat");
+
+      if(enabled && (heartbeatCounter > heartbeatTimeout))
+        TurnOff();
+      
     }
     
     // Blink
@@ -107,6 +142,7 @@ void loop() {
         b2 = Serial.read();
         b3 = Serial.read();
         
+        /*
         Serial.print("0x");
         Serial.print(c,HEX);
         Serial.print(" ");
@@ -118,7 +154,7 @@ void loop() {
         Serial.print(" ");
         Serial.print("0x");
         Serial.print(b3,HEX);
-
+        */
         
         switch(c){
           case 0x00: // HSV
@@ -158,12 +194,14 @@ void loop() {
               maxBrightness = b1;
               maxBrightnessDebugLed = b2;
               //LEDS.setBrightness(maxBrightness);
-          case 0xf0: // Settings
-              heartbeat_receive = 1;
+          case 0xff: // heartbeat answer
+              if(b1 == 0x01 && b2 == 0x02 && b3 == 0x03)
+                enabled = 1;
+                heartbeatCounter = 0;
               break;
         }
 
-      Serial.println("");
+      //Serial.println("");
     }
 
 

@@ -130,12 +130,16 @@ namespace BusyBlinkenlichten
             {
                 WriteLog("(E) Cannot read line from serial port!");
             }
-            if(!data.StartsWith("heartbeat"))
-                this.BeginInvoke(new SetTextDeleg(WriteLog), new object[] { data });
-            else
+
+            if (data.StartsWith("heartbeat") || data.StartsWith("\xff"))
             {
+                SendHeartbeatAnswer();
                 this.heartbeat = !this.heartbeat;
                 lblHeartbeat.ForeColor = this.heartbeat ? Color.Red : Color.Black;
+            }
+            else
+            {
+                this.BeginInvoke(new SetTextDeleg(WriteLog), new object[] { data });
             }
         }
 
@@ -372,6 +376,11 @@ namespace BusyBlinkenlichten
             SerialSendBytes(new byte[] { 0xF0, MaxBrightness, MaxBrightnessDebug, 0x00 });
         }
 
+        void SendHeartbeatAnswer()
+        {
+            SerialSendBytes(new byte[] { 0xFF, 0x01, 0x02, 0x03 });
+        }
+
         void SerialSendBytes(byte[] bytes)
         {
             try
@@ -449,7 +458,8 @@ namespace BusyBlinkenlichten
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            Connect();
+            if(Connect())
+                Blinkenlichten();
         }
 
         private void btnSetCustom_Click(object sender, EventArgs e)
