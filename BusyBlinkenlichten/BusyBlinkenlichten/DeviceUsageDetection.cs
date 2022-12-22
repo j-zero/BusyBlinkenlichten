@@ -51,8 +51,11 @@ namespace BusyBlinkenlichten
         }
 
         public bool IsMicrophoneInUse { get; private set; }
-        public bool IsWebcamInUse { get; private set; }
 
+        public AppInformation LastMicrophoneApplication { get; private set; }
+
+        public bool IsWebcamInUse { get; private set; }
+        public AppInformation LastWebcamApplication { get; private set; }
         public List<AppInformation> MicrophoneApps { get; private set; }
         public List<AppInformation> WebcamApps { get; private set; }
 
@@ -118,6 +121,7 @@ namespace BusyBlinkenlichten
 
         private void GetUsage(RegistryHive Hive, DeviceType Device)
         {
+
             string dev = "microphone";
             switch (Device)
             {
@@ -157,14 +161,21 @@ namespace BusyBlinkenlichten
                     if (Device == DeviceType.Microhpone)
                     {
                         if (ai.InUse)
+                        {
                             this.IsMicrophoneInUse = true;
+                            this.LastMicrophoneApplication = ai;
+                        }
                         MicrophoneApps.Add(ai);
                     }
 
                     else if (Device == DeviceType.Webcam)
                     {
                         if (ai.InUse)
+                        {
                             this.IsWebcamInUse = true;
+                            this.LastWebcamApplication = ai;
+                        }
+                        
                         WebcamApps.Add(ai);
                     }
                 }
@@ -189,14 +200,21 @@ namespace BusyBlinkenlichten
                     if (Device == DeviceType.Microhpone)
                     {
                         if (ai.InUse)
+                        {
                             this.IsMicrophoneInUse = true;
+                            this.LastMicrophoneApplication = ai;
+                        }
                         MicrophoneApps.Add(ai);
                     }
 
                     else if (Device == DeviceType.Webcam)
                     {
                         if (ai.InUse)
+                        {
                             this.IsWebcamInUse = true;
+                            this.LastWebcamApplication = ai;
+                        }
+                            
                         WebcamApps.Add(ai);
                     }
                 }
@@ -204,8 +222,8 @@ namespace BusyBlinkenlichten
             }
             catch(Exception ex)
             {
-                System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.Message);
-                System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.StackTrace);
+                System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.Message + Environment.NewLine + ex.StackTrace);
+                //System.IO.File.AppendAllText("BusyBlinkenlichten.log", ex.StackTrace);
             }
         
         }

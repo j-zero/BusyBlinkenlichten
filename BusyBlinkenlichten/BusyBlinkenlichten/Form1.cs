@@ -54,10 +54,10 @@ namespace BusyBlinkenlichten
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             
-
-
-
             this.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
+
+
+
         }
 
 
@@ -87,6 +87,7 @@ namespace BusyBlinkenlichten
         {
             switch (e.Mode)
             {
+                
                 case PowerModes.Suspend:
                     SetColorRGB(0, 0, 0);
                     kuando.Off();
@@ -106,8 +107,16 @@ namespace BusyBlinkenlichten
             cmbPorts.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             cmbPorts.Items.AddRange(ports);
-            if (ports.Length > 0)
+
+            string regComPort = RegistrySettings.GetValue("ComPort");
+            if (regComPort != null)
+            {
+                //cmbPorts.SelectedItem = regComPort;
+            }
+            /*
+            else if (ports.Length > 0)
                 cmbPorts.SelectedIndex = 0;
+            */
 
         }
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -158,9 +167,12 @@ namespace BusyBlinkenlichten
                 serialPort.DtrEnable = true;
                 serialPort.RtsEnable = true;
                 serialPort.DataReceived += SerialPort_DataReceived;
-                Blinkenlichten();
+                //Blinkenlichten();
                 btnDisconnect.Enabled = true;
                 btnConnect.Enabled = false;
+
+                RegistrySettings.SetValue("ComPort", cmbPorts.Text);
+
                 return serialPort.IsOpen;
             }
             catch(Exception ex)
@@ -168,6 +180,17 @@ namespace BusyBlinkenlichten
                 WriteLog(ex.Message);
             }
             return false;
+        }
+
+        void StartAnimation()
+        {
+            Color[] colors = new Color[] { Color.White, Color.Magenta, Color.Orange, Color.Cyan, Color.Black };
+            foreach (Color c in colors)
+            {
+                SetColor(c);
+                kuando.Light(c.R, c.B, c.G);
+                System.Threading.Thread.Sleep(500);
+            }
         }
 
         private void Blinkenlichten()
@@ -185,8 +208,19 @@ namespace BusyBlinkenlichten
             if(!enableKuando)
                 kuando.Off();
 
+
             lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString();
             lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString();
+
+            //lblMicrophoneUsage.Text = deviceUsageDetection.IsMicrophoneInUse.ToString() + " " + deviceUsageDetection.LastMicrophoneApplication != null ? "( " + deviceUsageDetection.LastMicrophoneApplication.SubKey + ")" : "";
+            //lblWebcamUsage.Text = deviceUsageDetection.IsWebcamInUse.ToString() + " " + deviceUsageDetection.LastWebcamApplication != null ? "( " + deviceUsageDetection.LastWebcamApplication.SubKey + ")" : "";
+
+            if (deviceUsageDetection.LastMicrophoneApplication != null && deviceUsageDetection.LastMicrophoneApplication.InUse == true)
+                WriteLog($"Microphone: ({deviceUsageDetection.LastMicrophoneApplication.SubKey}) {deviceUsageDetection.LastMicrophoneApplication.Path}");
+            if (deviceUsageDetection.LastWebcamApplication != null && deviceUsageDetection.LastWebcamApplication.InUse == true)
+                WriteLog($"Webcam: ({deviceUsageDetection.LastWebcamApplication.SubKey}) {deviceUsageDetection.LastWebcamApplication.Path}");
+            
+            ;
             if (!chkForceFree.Checked)
             {
                 if (deviceUsageDetection.IsWebcamInUse || chkForceWebcam.Checked)
@@ -383,6 +417,9 @@ namespace BusyBlinkenlichten
         {
             RefreshPorts();
             Connect();
+
+            StartAnimation();
+
             Blinkenlichten();
         }
 
@@ -535,6 +572,7 @@ namespace BusyBlinkenlichten
                 kuando.Off();
             else
                 Blinkenlichten();
+            RegistrySettings.SetValue("KuandoEnabled", chkKuando.Checked);
         }
 
         private void btnMediaPlayStop_Click(object sender, EventArgs e)
@@ -604,12 +642,27 @@ namespace BusyBlinkenlichten
 
         private void chkStopMedia_CheckedChanged(object sender, EventArgs e)
         {
-
+            RegistrySettings.SetValue("StopMedia", chkStopMedia.Checked);
         }
 
         private void kuandoForceTimer_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbPorts_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ;
+        }
+
+        private void beendenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Exit();
+        }
+
+        private void chkKuandoFallback_CheckedChanged(object sender, EventArgs e)
+        {
+            RegistrySettings.SetValue("KuandoFallback", chkKuandoFallback.Checked);
         }
     }
 }

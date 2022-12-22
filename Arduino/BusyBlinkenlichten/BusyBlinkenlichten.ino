@@ -65,6 +65,7 @@ void loop() {
     // Heartbeat
     if (currentMillis - previousMillisHeartBeat >= heartbeat) {
       previousMillisHeartBeat = currentMillis;
+      heartbeat_receive = 0;
       Serial.println("heartbeat");
     }
     
@@ -157,7 +158,8 @@ void loop() {
               maxBrightness = b1;
               maxBrightnessDebugLed = b2;
               //LEDS.setBrightness(maxBrightness);
-              
+          case 0xf0: // Settings
+              heartbeat_receive = 1;
               break;
         }
 

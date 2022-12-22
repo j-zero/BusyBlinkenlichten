@@ -38,6 +38,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.setCustomColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blinkenlichtenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblWebcamUsage = new System.Windows.Forms.Label();
@@ -110,9 +112,11 @@
             this.forceFreeToolStripMenuItem,
             this.toolStripMenuItem1,
             this.setCustomColorToolStripMenuItem,
-            this.blinkenlichtenToolStripMenuItem});
+            this.blinkenlichtenToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.beendenToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 120);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 148);
             // 
             // forceWebcamToolStripMenuItem
             // 
@@ -153,6 +157,18 @@
             this.blinkenlichtenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.blinkenlichtenToolStripMenuItem.Text = "Blinkenlichten!";
             this.blinkenlichtenToolStripMenuItem.Click += new System.EventHandler(this.blinkenlichtenToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(168, 6);
+            // 
+            // beendenToolStripMenuItem
+            // 
+            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.beendenToolStripMenuItem.Text = "Beenden";
+            this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -241,6 +257,7 @@
             this.cmbPorts.Size = new System.Drawing.Size(140, 23);
             this.cmbPorts.TabIndex = 7;
             this.cmbPorts.DropDown += new System.EventHandler(this.cmbPorts_DropDown);
+            this.cmbPorts.SelectedValueChanged += new System.EventHandler(this.cmbPorts_SelectedValueChanged);
             // 
             // label3
             // 
@@ -590,7 +607,7 @@
             // chkKuando
             // 
             this.chkKuando.AutoSize = true;
-            this.chkKuando.Location = new System.Drawing.Point(194, 47);
+            this.chkKuando.Location = new System.Drawing.Point(272, 47);
             this.chkKuando.Name = "chkKuando";
             this.chkKuando.Size = new System.Drawing.Size(115, 19);
             this.chkKuando.TabIndex = 38;
@@ -654,7 +671,7 @@
             this.chkStopMedia.AutoSize = true;
             this.chkStopMedia.Checked = true;
             this.chkStopMedia.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkStopMedia.Location = new System.Drawing.Point(322, 47);
+            this.chkStopMedia.Location = new System.Drawing.Point(395, 47);
             this.chkStopMedia.Name = "chkStopMedia";
             this.chkStopMedia.Size = new System.Drawing.Size(88, 19);
             this.chkStopMedia.TabIndex = 43;
@@ -667,12 +684,13 @@
             this.chkKuandoFallback.AutoSize = true;
             this.chkKuandoFallback.Checked = true;
             this.chkKuandoFallback.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkKuandoFallback.Location = new System.Drawing.Point(194, 69);
+            this.chkKuandoFallback.Location = new System.Drawing.Point(272, 63);
             this.chkKuandoFallback.Name = "chkKuandoFallback";
             this.chkKuandoFallback.Size = new System.Drawing.Size(118, 19);
             this.chkKuandoFallback.TabIndex = 44;
             this.chkKuandoFallback.Text = "Kuando Fallback";
             this.chkKuandoFallback.UseVisualStyleBackColor = true;
+            this.chkKuandoFallback.CheckedChanged += new System.EventHandler(this.chkKuandoFallback_CheckedChanged);
             // 
             // Form1
             // 
@@ -802,6 +820,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.CheckBox chkStopMedia;
         private System.Windows.Forms.CheckBox chkKuandoFallback;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
     }
 }
 
