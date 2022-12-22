@@ -27,6 +27,7 @@ namespace BusyBlinkenlichten
         public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
 
         private delegate void SetTextDeleg(string text);
+        private delegate void FunctionCallDeleg();
 
         Busylight.KuandoSDK kuando = new KuandoSDK("BusyBlinkenlichten");
         
@@ -37,6 +38,8 @@ namespace BusyBlinkenlichten
         bool heartbeat = false;
         bool AllowDisplay = true;
         bool isLocked = false;
+
+        bool serialConnected = false;
 
         protected override void SetVisibleCore(bool value)
         {
@@ -104,19 +107,15 @@ namespace BusyBlinkenlichten
 
         void RefreshPorts()
         {
+            
             cmbPorts.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             cmbPorts.Items.AddRange(ports);
 
             string regComPort = RegistrySettings.GetValue("ComPort");
-            if (regComPort != null)
-            {
-                //cmbPorts.SelectedItem = regComPort;
-            }
-            /*
-            else if (ports.Length > 0)
-                cmbPorts.SelectedIndex = 0;
-            */
+            if (regComPort != null && cmbPorts.Items.Contains(regComPort))
+                cmbPorts.SelectedItem = regComPort;
+            
 
         }
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -133,6 +132,9 @@ namespace BusyBlinkenlichten
 
             if (data.StartsWith("heartbeat") || data.StartsWith("\xff"))
             {
+                if (!serialConnected)
+                    this.BeginInvoke(new FunctionCallDeleg(InitSerialConnection));
+
                 SendHeartbeatAnswer();
                 this.heartbeat = !this.heartbeat;
                 lblHeartbeat.ForeColor = this.heartbeat ? Color.Red : Color.Black;
@@ -175,8 +177,6 @@ namespace BusyBlinkenlichten
                 btnDisconnect.Enabled = true;
                 btnConnect.Enabled = false;
 
-                RegistrySettings.SetValue("ComPort", cmbPorts.Text);
-
                 return serialPort.IsOpen;
             }
             catch(Exception ex)
@@ -188,6 +188,7 @@ namespace BusyBlinkenlichten
 
         void StartAnimation()
         {
+
             Color[] colors = new Color[] { Color.White, Color.Magenta, Color.Orange, Color.Cyan, Color.Black };
             foreach (Color c in colors)
             {
@@ -385,10 +386,14 @@ namespace BusyBlinkenlichten
         {
             try
             {
-                if (serialPort != null && serialPort.IsOpen)
+                if (serialConnected && serialPort != null && serialPort.IsOpen)
                 {
                     serialPort.Write(bytes, 0x00, bytes.Length);
                     System.Threading.Thread.Sleep(10);
+                }
+                else if (!serialConnected)
+                {
+                    WriteLog("(E) not connected to correct device!");
                 }
             }
             catch(Exception ex)
@@ -424,11 +429,25 @@ namespace BusyBlinkenlichten
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            RefreshAll();
+        }
+
+        void RefreshAll()
+        {
             RefreshPorts();
             Connect();
+            //StartAnimation();
+            Blinkenlichten();
+        }
+
+        void InitSerialConnection()
+        {
+            serialConnected = true;
+            WriteLog("(!) connected and heartbeat received.");
+
+            RegistrySettings.SetValue("ComPort", cmbPorts.Text);
 
             StartAnimation();
-
             Blinkenlichten();
         }
 
