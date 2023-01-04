@@ -51,8 +51,6 @@ namespace BusyBlinkenlichten
             InitializeComponent();
             deviceUsageDetection = new DeviceUsageDetection();
             deviceUsageDetection.DeviceUsageDetected += DeviceUsageDetection_DeviceUsageDetected;
-             
-           
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
