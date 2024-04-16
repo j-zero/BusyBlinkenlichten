@@ -38,7 +38,7 @@ namespace BusyBlinkenlichten
         bool heartbeat = false;
         bool AllowDisplay = true;
         bool isLocked = false;
-
+        bool enableKuando = false;
         bool serialConnected = false;
 
         protected override void SetVisibleCore(bool value)
@@ -57,7 +57,7 @@ namespace BusyBlinkenlichten
             
             this.Text = "Busy𝔅𝔩𝔦𝔠𝔨𝔢𝔫𝔩𝔦𝔠𝔥𝔱𝔢𝔫!";
 
-
+            
 
         }
 
@@ -204,7 +204,7 @@ namespace BusyBlinkenlichten
                 kuando.Off();
                 return;
             }
-            bool enableKuando = false;
+
 
             enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !(serialPort != null && serialPort.IsOpen));
 
@@ -344,6 +344,9 @@ namespace BusyBlinkenlichten
             pictureBox1.Image = ImageManipulation.MatrixBlend(col, Properties.Resources.sirene_white, 1.0f);
             SetFormIcon(pictureBox1.Image);
             SerialSendBytes(new byte[] { 0x01, r, g, b });
+            if (enableKuando)
+                kuando.Light(r, b, g);
+
         }
 
         void SetColorHSV(byte h, byte s, byte v)
@@ -600,6 +603,7 @@ namespace BusyBlinkenlichten
             else
                 Blinkenlichten();
             RegistrySettings.SetValue("KuandoEnabled", chkKuando.Checked);
+            enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !(serialPort != null && serialPort.IsOpen));
         }
 
         private void btnMediaPlayStop_Click(object sender, EventArgs e)
@@ -690,6 +694,7 @@ namespace BusyBlinkenlichten
         private void chkKuandoFallback_CheckedChanged(object sender, EventArgs e)
         {
             RegistrySettings.SetValue("KuandoFallback", chkKuandoFallback.Checked);
+            enableKuando = chkKuando.Checked ^ (chkKuandoFallback.Checked && !(serialPort != null && serialPort.IsOpen));
         }
     }
 }
